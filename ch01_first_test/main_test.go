@@ -16,3 +16,9 @@ func TestGolang(t *testing.T) {
 // 2. 必ず0を返す関数Substractを作成（コンパイルエラーなし）
 // 3. テストを実行します（テスト失敗）
 // 4. Substractを実装します（テスト成功）
+func TestSubstract(t *testing.T) {
+	s := Substract(6, 2)
+	if s != 4 {
+		t.FailNow()
+	}
+}
