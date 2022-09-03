@@ -1,18 +1,19 @@
-# Ch01. First Test
+# 第1章 初めてのテスト
 
-## Setup
+## セットアップ
 
-1. Install Golang 1.19 with the instruction of https://go.dev/doc/install
-2. Confirm `go` command installed successfully
-    Run `go version`
-3. Download source code from https://github.com/akm/second_tour_of_go/releases/tag/ch01_first_test_01
-4. Unzip the file downloaded
-5. Open `Terminal` (Mac/Linux) or `Command Prompt` (Windows)
-6. Change diectory to `ch01_first_test`
+1. https://go.dev/doc/install の指示に従って Go 1.19 をインストール
+    [asdf](https://asdf-vm.com/)の[golangプラグイン](https://github.com/kennyp/asdf-golang) あるいは [goenv](https://github.com/syndbg/goenv) などを使うことを推奨
+1. `go` コマンドのバージョンを確認
+    1. `ターミナル` (Mac/Linux) or `コマンドプロンプト` (Windows) を新たに開く
+    1. `go version` を実行
+    1. インストールしたGoのバージョンが表示されることを確認
+1. https://github.com/akm/second_tour_of_go/releases/tag/ch01_first_test_01 からソースコードをダウンロード
+1. ダウンロードしたコードを解凍
+1. ターミナル上でディレクトリ `ch01_first_test` に移動
     `cd path/to/second_tour_of_go-ch01_first_test_01/ch01_first_test`
-    (Replace `path/to` to actual directory the file is unzipped into)
-7. Run `go test`
-    You can see output like this:
+    (`path/to` は解凍して作られたディレクトリに置き換えて実行してください )
+1. `go test` を実行し、以下のような出力が表示されることを確認
     ```
     PASS
     ok      github.com/akm/second_tour_of_go/ch01_first_test        0.341s
