@@ -5,6 +5,5 @@ func Add(x, y int) int {
 }
 
 func Substract(x, y int) int {
-	// TODO 実装
-	return 0
+	return x - y
 }
