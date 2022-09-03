@@ -17,3 +17,6 @@ func TestSubstract(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+// Q3. 掛け算 Multiply と 割り算 Divide についてもQ2 を同じ順番で実装してみましょう
+//     一つのテストの中に複数回の関数の呼び出しと結果の確認のコードを書いてください。
