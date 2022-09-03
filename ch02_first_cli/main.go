@@ -1,5 +1,7 @@
 package main
 
+import "os"
+
 func main() {
-	println("Hello, World!")
+	println("Hello, " + os.Args[1] + "!")
 }
