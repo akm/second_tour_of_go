@@ -4,6 +4,7 @@ import (
 	"testing"
 )
 
+// Q1. 足し算を行う関数Addを、同じディレクトリのファイル add.go に作成してください
 func TestGolang(t *testing.T) {
 	s := 1 + 2
 	if s != 3 {
