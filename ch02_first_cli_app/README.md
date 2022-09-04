@@ -122,3 +122,17 @@ USAGE:
    Shows addition or subtraction with X and Y
    X and Y must be number
 ```
+
+## :question: 条件分岐を減らす
+
+この時点での実装では、 main関数でswitch文を２つ使うような実装になっていると思われます。
+これをよりシンプルにする方法を考えてください。ただし、出力結果の条件として以下を追加します。
+
+```
+./ch02_first_cli_app foo 1 a      # => (ヘルプを表示)
+./ch02_first_cli_app foo x 2      # => (ヘルプを表示)
+```
+
+### ヒント
+
+インターフェイスを使ってください。
