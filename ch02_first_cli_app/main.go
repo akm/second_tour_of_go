@@ -8,10 +8,7 @@ import (
 
 func main() {
 	if len(os.Args) < 3 {
-		fmt.Printf("USAGE:\n")
-		fmt.Printf("%s X Y\n", os.Args[0])
-		fmt.Printf("   Shows sum of X and Y\n")
-		fmt.Printf("   X and Y must be number\n")
+		showHelp()
 		os.Exit(1)
 	}
 	x, err := parseInt(os.Args[1])
@@ -25,6 +22,13 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Printf("Result: %d\n", x+y)
+}
+
+func showHelp() {
+	fmt.Printf("USAGE:\n")
+	fmt.Printf("%s X Y\n", os.Args[0])
+	fmt.Printf("   Shows sum of X and Y\n")
+	fmt.Printf("   X and Y must be number\n")
 }
 
 func parseInt(s string) (int, error) {
