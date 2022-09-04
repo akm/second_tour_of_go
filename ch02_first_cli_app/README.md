@@ -61,3 +61,35 @@ Windows   | `./second_tour_of_go.exe`
 
 [標準ライブラリ](https://pkg.go.dev/std) の `os` パッケージの変数 `Args` を使います。
 また `fmt` パッケージを使うとよりシンプルに書けると思います。
+
+
+## :question: 足し算アプリ
+
+以下の条件を満たすように変更してください(実行形式のファイルを ch02_first_cli_app とします)。
+
+```
+./ch02_first_cli_app 1 2 # => Result: 3
+./ch02_first_cli_app 1 a # => ERROR: "a" is not a number
+./ch02_first_cli_app x a # => ERROR: "x" is not a numeric
+./ch02_first_cli_app x   # => (ヘルプを表示)
+./ch02_first_cli_app     # => (ヘルプを表示)
+```
+
+ERRORやヘルプを表示する際の終了コードは1（それ以外は0）とする
+
+### ヘルプの内容
+
+```
+USAGE:
+./ch02_first_cli X Y
+   Shows sum of X and Y
+   X and Y must be number
+```
+
+### ヒント
+
+以下の関数を利用
+
+- `strconv.Atoi`
+- `os.Exit`
+- `fmt.Printf`
