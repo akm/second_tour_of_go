@@ -93,3 +93,32 @@ USAGE:
 - `strconv.Atoi`
 - `os.Exit`
 - `fmt.Printf`
+
+## :question: 足し算と引き算のサポート
+
+実行形式のファイルを ch02_first_cli_app とする
+
+```
+./ch02_first_cli_app add 1 2      # => addition: 3
+./ch02_first_cli_app subtract 1 2 # => subtraction: -1
+./ch02_first_cli_app foo 1 2      # => (ヘルプを表示)
+./ch02_first_cli_app add 1 a      # => ERROR: "a" is not a number
+./ch02_first_cli_app add x a      # => ERROR: "x" is not a number
+./ch02_first_cli_app add x        # => (ヘルプを表示)
+./ch02_first_cli_app add          # => (ヘルプを表示)
+./ch02_first_cli_app subtract 1 a # => ERROR: "a" is not a number
+./ch02_first_cli_app subtract x a # => ERROR: "x" is not a number
+./ch02_first_cli_app subtract x	  # => (ヘルプを表示)
+./ch02_first_cli_app subtract		  # => (ヘルプを表示)
+```
+
+ERRORやヘルプを表示する際の終了コードは1とする
+
+### ヘルプの内容
+
+```
+USAGE:
+./ch02_first_cli_app (add|subtract) X Y
+   Shows addition or subtraction with X and Y
+   X and Y must be number
+```
