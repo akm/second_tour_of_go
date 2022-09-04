@@ -1,5 +1,27 @@
 # Second Tour of Go
 
+## Goのインストール
+
+### バージョンマネージャーの利用
+
+バージョンマネージャーを利用するとインストールの管理や複数バージョンを利用を簡単に行うことができます。
+
+バージョンマネージャー | 環境 | 複数のGoのバージョンの管理 | 他の他の言語・ツールの管理 | 備考
+-------------------|------|-----------------------|-------------------------|-----
+[asdf](https://asdf-vm.com/guide/getting-started.html) | macOS/Linux | OK | OK | オススメ
+[goenv](https://github.com/syndbg/goenv) | macOS/Linux | OK | NG | anyenvから利用するのが一般的？
+[g](https://github.com/voidint/g) | Linux/macOS/Windows | OK | NG | [Multi version management of golang in Windows](https://developpaper.com/multi-version-management-of-golang-in-windows/)
+[scoop](https://scoop.sh/) | Windows | NG? | OK |
+
+
+もしバージョンマネージャーを使うことが難しい場合は後述の [素でインストール](#素でインストール) を行ってインストールしてください。
+
+### 素でインストール
+
+https://go.dev/doc/install の指示に従って Go 1.19 をインストールします。
+その環境に一つのバージョンしかいれることができないので、実際の開発時には困ることが多いインストール方法です。
+
+
 ## 取り組み方
 
 ### PRベース
