@@ -136,3 +136,23 @@ USAGE:
 ### ヒント
 
 インターフェイスを使ってください。
+
+
+## :question: mapとif文を使ってswitch文を減らす
+
+```golang
+	var calc Calculation
+	switch os.Args[1] {
+	case "add":
+		calc = &Addition{}
+	case "subtract":
+		calc = &Subtraction{}
+	default:
+		showHelp()
+		os.Exit(1)
+	}
+```
+
+となっている部分を map と if文を使って書き直してください。
+
+
