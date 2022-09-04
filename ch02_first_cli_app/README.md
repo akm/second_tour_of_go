@@ -20,3 +20,29 @@ VMやDockerを使ってLinuxを動かしたり、直接LinuxあるいはMacを�
 2. `go mod init github.com/akm/second_tour_of_go/ch02_first_cli_app` を実行
     - `github.com/akm` の部分は他の文字列に変更してもOKです。
         - Github等で管理するのであれば、自分の環境に合わせて変更してください
+
+## :exclamation: Hello, World!
+
+以下の内容でmain.goを作成し、実行してください。また実行形式のファイルを作成した上でそれを実行してください。
+
+```golang
+package main
+
+func main() {
+	println("Hello, World!")
+}
+```
+
+### 使用するコマンド
+
+- ビルド(=実行形式ファイルを作成)
+  - `go build .`
+- 実行形式ファイルを作成せずに実行
+  - `go run .`
+
+### 実行形式のファイルの実行
+
+環境 | コマンド
+---------|--------
+Linux/Mac | `./second_tour_of_go` 
+Windows   | `./second_tour_of_go.exe`
