@@ -1,5 +1,11 @@
 package main
 
+import "os"
+
 func main() {
-	println("Hello, World!")
+	if len(os.Args) > 1 {
+		println("Hello, " + os.Args[1] + "!")
+	} else {
+		println("Hello, someone!")
+	}
 }
