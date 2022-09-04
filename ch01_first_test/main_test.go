@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestGolang(t *testing.T) {
+func TestAdd(t *testing.T) {
 	s := 1 + 2
 	if s != 3 {
 		t.FailNow()
