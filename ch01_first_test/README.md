@@ -18,3 +18,8 @@
     PASS
     ok      github.com/akm/second_tour_of_go/ch01_first_test        0.341s
     ```
+
+## :question: 関数Addを作成
+
+足し算を行う関数Addを、main_test.goと同じディレクトリのファイル calc.go に作成してください。
+また、テストをAddを使うように変更して、テストがパスすることを確認してください。
