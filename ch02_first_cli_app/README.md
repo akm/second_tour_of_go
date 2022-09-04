@@ -46,3 +46,18 @@ func main() {
 ---------|--------
 Linux/Mac | `./second_tour_of_go` 
 Windows   | `./second_tour_of_go.exe`
+
+
+## :question: Hello, Arguments!
+
+以下の条件を満たすように変更してください(実行形式のファイルを ch02_first_cli_app とします)。
+
+```
+./ch02_first_cli_app Golang # => Hello, Golang!
+./ch02_first_cli_app        # => Hello, someone!
+```
+
+### ヒント
+
+[標準ライブラリ](https://pkg.go.dev/std) の `os` パッケージの変数 `Args` を使います。
+また `fmt` パッケージを使うとよりシンプルに書けると思います。
