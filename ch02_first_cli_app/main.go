@@ -1,11 +1,16 @@
 package main
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
+	var name string
 	if len(os.Args) > 1 {
-		println("Hello, " + os.Args[1] + "!")
+		name = os.Args[1]
 	} else {
-		println("Hello, someone!")
+		name = "someone"
 	}
+	fmt.Printf("Hello, %s!", name)
 }
