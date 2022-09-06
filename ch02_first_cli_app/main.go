@@ -6,9 +6,9 @@ import (
 	"strconv"
 )
 
-var calcMap = map[string]Calculation{
-	"add":      &Addition{},
-	"subtract": &Subtraction{},
+var calcMap = map[string]func() Calculation{
+	"add":      func() Calculation { return &Addition{} },
+	"subtract": func() Calculation { return &Subtraction{} },
 }
 
 func main() {
@@ -17,11 +17,12 @@ func main() {
 		os.Exit(1)
 	}
 
-	calc, ok := calcMap[os.Args[1]]
+	calcFactory, ok := calcMap[os.Args[1]]
 	if !ok {
 		showHelp()
 		os.Exit(1)
 	}
+	calc := calcFactory()
 
 	x, err := parseInt(os.Args[2])
 	if err != nil {
