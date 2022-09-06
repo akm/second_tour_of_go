@@ -7,6 +7,8 @@ type Calculation interface {
 
 type Addition struct{}
 
+var _ Calculation = (*Addition)(nil)
+
 func (*Addition) String() string {
 	return "addition"
 }
@@ -16,6 +18,8 @@ func (*Addition) Do(x, y int) int {
 }
 
 type Subtraction struct{}
+
+var _ Calculation = (*Subtraction)(nil)
 
 func (*Subtraction) String() string {
 	return "subtraction"
