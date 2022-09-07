@@ -197,3 +197,52 @@ USAGE:
    Shows the result of calculation with X and Y
    X and Y must be number
 ```
+
+## :question: サブコマンド divide を実装してください
+
+以下の条件を満たすように変更してください(実行形式のファイルを ch02_first_cli_app とします)。
+構造を変えても構いません。もちろん、テストも作成してください。
+
+```
+./ch02_first_cli_app add 1 2      # => addition: 3
+./ch02_first_cli_app subtract 1 2 # => subtraction: -1
+./ch02_first_cli_app multiply 2 3 # => multiplication: 6
+./ch02_first_cli_app divide 7 3   # => division: (quotient: 2, remainder: 1)
+./ch02_first_cli_app divide 0 3   # => division: (quotient: 0, remainder: 0)
+./ch02_first_cli_app divide 11 0  # => division: Invalid denominator. It must be not zero
+./ch02_first_cli_app foo 1 2      # => (ヘルプを表示)
+./ch02_first_cli_app foo 1 a      # => (ヘルプを表示)
+./ch02_first_cli_app foo x 2      # => (ヘルプを表示)
+./ch02_first_cli_app add 1 a      # => ERROR: "a" is not a number
+./ch02_first_cli_app add x a      # => ERROR: "x" is not a number
+./ch02_first_cli_app add x        # => (ヘルプを表示)
+./ch02_first_cli_app add          # => (ヘルプを表示)
+./ch02_first_cli_app subtract 1 a # => ERROR: "a" is not a number
+./ch02_first_cli_app subtract x a # => ERROR: "x" is not a number
+./ch02_first_cli_app subtract x   # => (ヘルプを表示)
+./ch02_first_cli_app subtract     # => (ヘルプを表示)
+./ch02_first_cli_app multiply 1 a # => ERROR: "a" is not a number
+./ch02_first_cli_app multiply x a # => ERROR: "x" is not a number
+./ch02_first_cli_app multiply x   # => (ヘルプを表示)
+./ch02_first_cli_app multiply     # => (ヘルプを表示)
+./ch02_first_cli_app divide 1 a   # => ERROR: "a" is not a number
+./ch02_first_cli_app divide x a   # => ERROR: "x" is not a number
+./ch02_first_cli_app divide x     # => (ヘルプを表示)
+./ch02_first_cli_app divide       # => (ヘルプを表示)
+```
+
+ERRORやヘルプを表示する際の終了コードは1とします。
+
+### ヘルプの内容
+
+```
+USAGE:
+./ch02_first_cli_app (add|subtract|multiply|divide) X Y
+   Shows the result of calculation with X and Y
+   X and Y must be number
+```
+
+### ヒント
+
+- Doの戻り値をどうするべきか考えましょう
+- いろいろな方法があるはずですが、最も構造がはっきりする方法でやってみてください
