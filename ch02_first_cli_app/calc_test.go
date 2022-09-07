@@ -43,3 +43,27 @@ func TestMultiplication(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+func TestDivision(t *testing.T) {
+	calc := &Division{}
+	if calc.String() != "division" {
+		t.FailNow()
+	}
+	if dr, ok := calc.Do(1, 2).(*DivisionResult); ok {
+		if dr.Quotient != 0 || dr.Remainder != 1 {
+			t.FailNow()
+		}
+	} else {
+		t.FailNow()
+	}
+	if dr, ok := calc.Do(8, 3).(*DivisionResult); ok {
+		if dr.Quotient != 2 || dr.Remainder != 2 {
+			t.FailNow()
+		}
+	} else {
+		t.FailNow()
+	}
+	if _, ok := calc.Do(7, 0).(*InvalidDenominator); !ok {
+		t.FailNow()
+	}
+}
