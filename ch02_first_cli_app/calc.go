@@ -28,3 +28,15 @@ func (*Subtraction) String() string {
 func (*Subtraction) Do(x, y int) int {
 	return x - y
 }
+
+type Multiplication struct{}
+
+var _ Calculation = (*Multiplication)(nil)
+
+func (*Multiplication) String() string {
+	return "multiplication"
+}
+
+func (*Multiplication) Do(x, y int) int {
+	return 0
+}
