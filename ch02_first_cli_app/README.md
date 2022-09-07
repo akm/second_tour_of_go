@@ -29,7 +29,7 @@ VMやDockerを使ってLinuxを動かしたり、直接LinuxあるいはMacを�
 package main
 
 func main() {
-	println("Hello, World!")
+  println("Hello, World!")
 }
 ```
 
@@ -108,8 +108,8 @@ USAGE:
 ./ch02_first_cli_app add          # => (ヘルプを表示)
 ./ch02_first_cli_app subtract 1 a # => ERROR: "a" is not a number
 ./ch02_first_cli_app subtract x a # => ERROR: "x" is not a number
-./ch02_first_cli_app subtract x	  # => (ヘルプを表示)
-./ch02_first_cli_app subtract		  # => (ヘルプを表示)
+./ch02_first_cli_app subtract x    # => (ヘルプを表示)
+./ch02_first_cli_app subtract      # => (ヘルプを表示)
 ```
 
 ERRORやヘルプを表示する際の終了コードは1とする
@@ -141,16 +141,16 @@ USAGE:
 ## :question: mapとif文を使ってswitch文を減らす
 
 ```golang
-	var calc Calculation
-	switch os.Args[1] {
-	case "add":
-		calc = &Addition{}
-	case "subtract":
-		calc = &Subtraction{}
-	default:
-		showHelp()
-		os.Exit(1)
-	}
+  var calc Calculation
+  switch os.Args[1] {
+  case "add":
+    calc = &Addition{}
+  case "subtract":
+    calc = &Subtraction{}
+  default:
+    showHelp()
+    os.Exit(1)
+  }
 ```
 
 となっている部分を map と if文を使って書き直してください。
@@ -159,3 +159,41 @@ USAGE:
 
 calc.go で実装されている機能についてテストを書いてみてください。
 もし必要があればcalc.goを変更しても構いません。
+
+
+## :question: サブコマンド multiply を実装してください
+
+以下の条件を満たすように変更してください(実行形式のファイルを ch02_first_cli_app とします)。
+また、テストも作成してください。
+
+```
+./ch02_first_cli_app add 1 2      # => addition: 3
+./ch02_first_cli_app subtract 1 2 # => subtraction: -1
+./ch02_first_cli_app multiply 2 3 # => multiplication: 6
+./ch02_first_cli_app foo 1 2      # => (ヘルプを表示)
+./ch02_first_cli_app foo 1 a      # => (ヘルプを表示)
+./ch02_first_cli_app foo x 2      # => (ヘルプを表示)
+./ch02_first_cli_app add 1 a      # => ERROR: "a" is not a number
+./ch02_first_cli_app add x a      # => ERROR: "x" is not a number
+./ch02_first_cli_app add x        # => (ヘルプを表示)
+./ch02_first_cli_app add          # => (ヘルプを表示)
+./ch02_first_cli_app subtract 1 a # => ERROR: "a" is not a number
+./ch02_first_cli_app subtract x a # => ERROR: "x" is not a number
+./ch02_first_cli_app subtract x    # => (ヘルプを表示)
+./ch02_first_cli_app subtract      # => (ヘルプを表示)
+./ch02_first_cli_app multiply 1 a # => ERROR: "a" is not a number
+./ch02_first_cli_app multiply x a # => ERROR: "x" is not a number
+./ch02_first_cli_app multiply x    # => (ヘルプを表示)
+./ch02_first_cli_app multiply      # => (ヘルプを表示)
+```
+
+ERRORやヘルプを表示する際の終了コードは1とします。
+
+### ヘルプの内容
+
+```
+USAGE:
+./ch02_first_cli_app (add|subtract|multiply) X Y
+   Shows the result of calculation with X and Y
+   X and Y must be number
+```
