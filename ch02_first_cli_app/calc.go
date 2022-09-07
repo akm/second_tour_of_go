@@ -38,5 +38,5 @@ func (*Multiplication) String() string {
 }
 
 func (*Multiplication) Do(x, y int) int {
-	return 0
+	return x * y
 }
