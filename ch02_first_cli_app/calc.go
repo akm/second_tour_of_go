@@ -86,5 +86,9 @@ func (*Division) String() string {
 }
 
 func (*Division) Do(x, y int) Result {
-	return Int(0)
+	if y == 0 {
+		return &InvalidDenominator{}
+	}
+	q, r := x/y, x%y
+	return &DivisionResult{q, r}
 }
