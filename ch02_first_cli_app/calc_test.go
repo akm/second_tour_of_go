@@ -7,10 +7,10 @@ func TestAddition(t *testing.T) {
 	if calc.String() != "addition" {
 		t.FailNow()
 	}
-	if calc.Do(1, 2) != 3 {
+	if calc.Do(1, 2) != Int(3) {
 		t.FailNow()
 	}
-	if calc.Do(1, -2) != -1 {
+	if calc.Do(1, -2) != Int(-1) {
 		t.FailNow()
 	}
 }
@@ -20,10 +20,10 @@ func TestSubtraction(t *testing.T) {
 	if calc.String() != "subtraction" {
 		t.FailNow()
 	}
-	if calc.Do(1, 2) != -1 {
+	if calc.Do(1, 2) != Int(-1) {
 		t.FailNow()
 	}
-	if calc.Do(1, -2) != 3 {
+	if calc.Do(1, -2) != Int(3) {
 		t.FailNow()
 	}
 }
@@ -33,13 +33,13 @@ func TestMultiplication(t *testing.T) {
 	if calc.String() != "multiplication" {
 		t.FailNow()
 	}
-	if calc.Do(1, 2) != 2 {
+	if calc.Do(1, 2) != Int(2) {
 		t.FailNow()
 	}
-	if calc.Do(3, 0) != 0 {
+	if calc.Do(3, 0) != Int(0) {
 		t.FailNow()
 	}
-	if calc.Do(4, -1) != -4 {
+	if calc.Do(4, -1) != Int(-4) {
 		t.FailNow()
 	}
 }
