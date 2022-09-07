@@ -10,6 +10,7 @@ var calcMap = map[string]func() Calculation{
 	"add":      func() Calculation { return &Addition{} },
 	"subtract": func() Calculation { return &Subtraction{} },
 	"multiply": func() Calculation { return &Multiplication{} },
+	"divide":   func() Calculation { return &Division{} },
 }
 
 func main() {
@@ -36,7 +37,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("%s: %d\n", calc.String(), calc.Do(x, y))
+	fmt.Printf("%s: %s\n", calc.String(), calc.Do(x, y))
 }
 
 func showHelp() {
