@@ -27,3 +27,19 @@ func TestSubtraction(t *testing.T) {
 		t.FailNow()
 	}
 }
+
+func TestMultiplication(t *testing.T) {
+	calc := &Multiplication{}
+	if calc.String() != "multiplication" {
+		t.FailNow()
+	}
+	if calc.Do(1, 2) != 2 {
+		t.FailNow()
+	}
+	if calc.Do(3, 0) != 0 {
+		t.FailNow()
+	}
+	if calc.Do(4, -1) != -4 {
+		t.FailNow()
+	}
+}
