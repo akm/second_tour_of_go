@@ -49,18 +49,18 @@ func TestDivision(t *testing.T) {
 	if calc.String() != "division" {
 		t.FailNow()
 	}
-	if dr, ok := calc.Do(1, 2).(*DivisionResult); ok {
-		if dr.Quotient != 0 || dr.Remainder != 1 {
-			t.FailNow()
+	check := func(x, y, q, r int) bool {
+		if dr, ok := calc.Do(x, y).(*DivisionResult); ok {
+			if dr.Quotient == q && dr.Remainder == r {
+				return true
+			}
 		}
-	} else {
+		return false
+	}
+	if !check(1, 2, 0, 1) {
 		t.FailNow()
 	}
-	if dr, ok := calc.Do(8, 3).(*DivisionResult); ok {
-		if dr.Quotient != 2 || dr.Remainder != 2 {
-			t.FailNow()
-		}
-	} else {
+	if !check(8, 3, 2, 2) {
 		t.FailNow()
 	}
 	if _, ok := calc.Do(7, 0).(*InvalidDenominator); !ok {
