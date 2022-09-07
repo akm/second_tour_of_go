@@ -1,0 +1,21 @@
+{
+  "client_id": 1,
+  "client_name": "John Doe",
+  "items": [
+    {
+      "product_id": 2,
+      "product_name": "Apple",
+      "amount": 3
+    },
+    {
+      "product_name": "Orange",
+      "amount": 5
+    },
+    {
+      "product_id": 3,
+      "product_name": "Banana",
+      "amount": 2
+    }
+  ],
+  "requested_at": "2022-09-07T17:47:20.659131+09:00"
+}
