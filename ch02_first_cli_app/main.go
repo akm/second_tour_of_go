@@ -9,6 +9,7 @@ import (
 var calcMap = map[string]func() Calculation{
 	"add":      func() Calculation { return &Addition{} },
 	"subtract": func() Calculation { return &Subtraction{} },
+	"multiply": func() Calculation { return &Multiplication{} },
 }
 
 func main() {
@@ -40,8 +41,8 @@ func main() {
 
 func showHelp() {
 	fmt.Printf("USAGE:\n")
-	fmt.Printf("%s (add|subtract) X Y\n", os.Args[0])
-	fmt.Printf("   Shows addition or subtraction with X and Y\n")
+	fmt.Printf("%s (add|subtract|multiply) X Y\n", os.Args[0])
+	fmt.Printf("   Shows the result of calculation with X and Y\n")
 	fmt.Printf("   X and Y must be number\n")
 }
 
