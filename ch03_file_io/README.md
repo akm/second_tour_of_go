@@ -96,3 +96,30 @@ foo.txt already exists. Overwrite? (y/n): y
 $ cat foo.txt
 baarrrrr
 ```
+
+## :question: append サブコマンド
+
+引数で指定されたファイルの末尾に、引数で指定された内容と末尾の改行を書き込む `append` サブコマンドを作成してください。
+ただし実行形式のファイル名は `ch03_file_io` とします。
+存在しないファイルに書き込む場合はファイルを作成するものとします。
+書き込み等のエラーが発生した場合は標準エラー出力に出力し、終了コードを 1 としてください。
+
+```
+./ch03_file_io                             # => (ヘルプを表示)
+./ch03_file_io cat                         # => (ヘルプを表示)
+./ch03_file_io cat README.md               # => (README.md のファイルの中身を表示)
+./ch03_file_io cat README.md > /dev/null   # => (何も出力されない)
+./ch03_file_io cat not_found               # => open ./READMEx.md: no such file or directory
+./ch03_file_io cat not_found 2> /dev/null  # => (何も出力されない)
+./ch03_file_io write                       # => (ヘルプを表示)
+./ch03_file_io write foo.txt               # => (ヘルプを表示)
+./ch03_file_io write foo.txt Foo           # => (何も出力しない、終了コード0)
+./ch03_file_io append                      # => (ヘルプを表示)
+./ch03_file_io append foo.txt              # => (ヘルプを表示)
+./ch03_file_io append foo.txt Foo          # => (何も出力しない、終了コード0)
+./ch03_file_io unknown                    # => (ヘルプを表示)
+```
+
+### ヒント
+
+- [os.OpenFile](https://pkg.go.dev/os#OpenFile)
