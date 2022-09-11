@@ -67,3 +67,32 @@ PowerShell の場合 `/dev/null` を `$null` に置き換えてください。
 
 - [os.Create](https://pkg.go.dev/os#File)
 - [fmt.Fprintln](https://pkg.go.dev/fmt#Fprintln)
+
+## :question: write サブコマンドで上書き確認
+
+write サブコマンドを変更し、存在するファイルが指定された場合は以下のようなメッセージを出力し、ユーザーに `y` あるいは `n` を入力してもらうことによって、上書きの是非を確認してください。
+
+### ヒント
+
+- [os.Stat](https://pkg.go.dev/os#Stat)
+- [os.IsExist](https://pkg.go.dev/os#IsExist)
+- [fmt.Scan](https://pkg.go.dev/fmt#Scan)
+
+### テスト方法
+
+```
+$ rm foo.txt
+$ go run . write foo.txt fooooooo
+$ cat foo.txt
+fooooooo
+$ go run . write foo.txt baarrrrr
+foo.txt already exists. Overwrite? (y/n): n
+Quit writing
+exit status 1
+$ cat foo.txt
+fooooooo
+$ go run . write foo.txt baarrrrr
+foo.txt already exists. Overwrite? (y/n): y
+$ cat foo.txt
+baarrrrr
+```
