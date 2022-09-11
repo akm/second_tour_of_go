@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -33,6 +34,20 @@ func main() {
 		if len(os.Args) < 4 {
 			showHelp()
 			os.Exit(1)
+		}
+		if _, err := os.Stat(os.Args[2]); err != nil {
+			if !os.IsNotExist(err) {
+				fmt.Fprintln(os.Stderr, err)
+				os.Exit(1)
+			}
+		} else {
+			fmt.Printf("%s already exists. Overwrite? (y/n): ", os.Args[2])
+			var answer string
+			fmt.Scanln(&answer)
+			if !strings.HasPrefix(strings.ToLower(answer), "y") {
+				fmt.Println("Quit writing")
+				os.Exit(1)
+			}
 		}
 		f, err := os.Create(os.Args[2])
 		if err != nil {
