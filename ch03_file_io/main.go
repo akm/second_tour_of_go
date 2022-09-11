@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -16,7 +17,13 @@ func main() {
 			showHelp()
 			os.Exit(1)
 		}
-		b, err := os.ReadFile(os.Args[2])
+		f, err := os.Open(os.Args[2])
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		defer f.Close()
+		b, err := io.ReadAll(f)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
