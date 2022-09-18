@@ -46,6 +46,25 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Println(string(b))
+	case "summary":
+		var people []*Person
+		if len(os.Args) < 3 {
+			showHelp()
+			os.Exit(1)
+		}
+		b, err := os.ReadFile(os.Args[2])
+		if err != nil {
+			panic(err)
+		}
+		if err := json.Unmarshal(b, &people); err != nil {
+			panic(err)
+		}
+		num := len(people)
+		s := 0
+		for _, p := range people {
+			s += p.Age
+		}
+		fmt.Printf("%d people, average age: %d\n", num, s/num)
 	default:
 		showHelp()
 		os.Exit(1)
@@ -56,4 +75,6 @@ func showHelp() {
 	fmt.Printf("Usage:\n")
 	fmt.Printf("  %s example\n", os.Args[0])
 	fmt.Printf("    Shows an example of JSON data\n")
+	fmt.Printf("  %s summary FILE\n", os.Args[0])
+	fmt.Printf("    Shows summary of people from FILE\n")
 }
