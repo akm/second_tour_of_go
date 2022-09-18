@@ -61,7 +61,7 @@ func main() {
 		}
 		fmt.Println(string(b))
 	case "summary":
-		var people []*Person
+		var people People
 		if len(os.Args) < 3 {
 			showHelp()
 			os.Exit(1)
@@ -73,12 +73,7 @@ func main() {
 		if err := json.Unmarshal(b, &people); err != nil {
 			panic(err)
 		}
-		num := len(people)
-		s := 0
-		for _, p := range people {
-			s += p.Age
-		}
-		fmt.Printf("%d people, average age: %d\n", num, s/num)
+		fmt.Printf("%d people, average age: %d\n", len(people), people.AverageAge())
 	default:
 		showHelp()
 		os.Exit(1)
