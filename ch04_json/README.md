@@ -78,3 +78,12 @@
 ### ヒント
 
 - [json.Unmarshal](https://pkg.go.dev/encoding/json#Unmarshal)
+
+## :question: スライス型の拡張
+
+以下のような`People` 型を定義して、そのメソッド `AverageAge` で平均年齢を求めるようにサブコマンド summary を変更してください。
+Peopleの要素数が0の場合は0を返すものとします。このテストも作成してください。順番は初めてのテストで紹介したやり方を思い出してください。
+
+```golang
+type Person []*Person
+```
