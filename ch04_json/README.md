@@ -62,3 +62,19 @@
 
 - [json.Marshal](https://pkg.go.dev/encoding/json#Marshal)
 - [json.MarshalIndent](https://pkg.go.dev/encoding/json#MarshalIndent)
+
+
+## :question: summary サブコマンド
+
+1. 指定されたJSONファイル( 例えば [people.json](./people.json) ) を読み込んで、人数と平均年齢を出力するサブコマンド summary を追加してください。
+    - 出力例
+        ```
+        5 people, average age: 30
+        ```
+2. 以下の場合にどのように振る舞うのかをしらべてください
+    1. フィールド名がマッチしないJSONファイルを指定した場合
+    2. JSON形式じゃないファイルが指定した場合
+
+### ヒント
+
+- [json.Unmarshal](https://pkg.go.dev/encoding/json#Unmarshal)
