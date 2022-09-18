@@ -87,3 +87,121 @@ Peopleの要素数が0の場合は0を返すものとします。このテスト
 ```golang
 type Person []*Person
 ```
+
+## :question: estimate サブコマンド
+
+指定された商品JSONファイルと見積もりリクエストJSONファイルを読み込んで、見積もり結果JSONを標準出力に出力するサブコマンド `estimate` を作成してください。軽減税率の対象の商品の消費税は `8%` 、対象外の商品の消費税は `10%` とします。
+消費税は各商品毎に求め、端数は切り捨てください（問題を簡単にするため）。
+商品JSONに含まれない商品名が指定された場合は商品が見つからないという旨のエラーにしてください。
+
+### 商品JSONファイル
+
+```json
+{
+  "Apple": {"unit_price": 200, "reduced_rate": false},
+  "Orange": {"unit_price": 120, "reduced_rate": true},
+  "Banana": {"unit_price": 250, "reduced_rate": true},
+  "Kiwi Fruit": {"unit_price": 100, "reduced_rate": true},
+  "Lemon": {"unit_price": 150, "reduced_rate": false}
+}
+```
+
+商品名のキーに対して、unit_price(価格)とreduced_rate(軽減税率対象)のフィールドを持つオブジェクトを値とするマップです。
+
+### 見積もりリクエストJSONファイル
+
+```json
+{
+  "client_name": "John Doe",
+  "items": [
+    {
+      "product_name": "Apple",
+      "quantity": 3
+    },
+    {
+      "product_name": "Orange",
+      "quantity": 4
+    },
+    {
+      "product_name": "Banana",
+      "quantity": 2
+    }
+  ]
+}
+```
+
+client_name(顧客名)とitems(明細)を持つオブジェクトです。
+itemsの要素は、product_name(商品名)とquantity(数量)のフィールドを持つオブジェクトです。
+
+### 見積もり結果JSON
+
+```json
+{
+  "client_name": "John Doe",
+  "estimated_at": "2022-09-18T16:27:20.467167+09:00",
+  "subtotal": 1580,
+  "tax": 138,
+  "total": 1718,
+  "items": [
+    {
+      "product_name": "Apple",
+      "quantity": 3,
+      "subtotal": 600,
+      "tax_rate": 10,
+      "tax": 60
+    },
+    {
+      "product_name": "Orange",
+      "quantity": 4,
+      "subtotal": 480,
+      "tax_rate": 8,
+      "tax": 38
+    },
+    {
+      "product_name": "Banana",
+      "quantity": 2,
+      "subtotal": 500,
+      "tax_rate": 8,
+      "tax": 40
+    }
+  ]
+}
+```
+
+以下のフィールドを持つオブジェクトです。
+
+- client_name(顧客名)
+- estimated_at(見積もり日時)
+- subtotal(小計、税抜)
+- tax(消費税)
+- total(合計金額)
+- items(明細の配列)
+
+明細は以下のフィールドを持つオブジェクトです。
+
+- product_name(商品名)
+- quantity(数量)
+- subtotal(小計、税抜)
+- tax_rate(税率、%)
+- tax(税額)
+
+### ヒント
+
+- 商品のデータについては、商品名をキー、(unit_priceとreduced_rateに相当するフィールドを持つ構造体)を値とする `map` を使うと作りやすいと思います
+- 型の名前の候補
+    - Product 製品
+    - Estimate 見積もり
+    - Request リクエスト
+    - Response 結果
+    - Item 要素
+    - Map マップ
+
+
+### チャレンジ
+
+1. どのような型を作るのかリストアップする
+2. 何がどのメソッドを呼ぶのかを考える
+3. 構造体やスライスの型を定義
+4. メソッドを仮実装
+5. テストを作成
+6. サブコマンド estimate を実装
