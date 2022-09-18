@@ -16,7 +16,15 @@ type Person struct {
 type People []*Person
 
 func (p People) AverageAge() int {
-	return 0
+	num := len(p)
+	if num == 0 {
+		return 0
+	}
+	s := 0
+	for _, i := range p {
+		s += i.Age
+	}
+	return s / num
 }
 
 func main() {
