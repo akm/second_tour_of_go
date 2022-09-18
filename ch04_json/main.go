@@ -13,6 +13,12 @@ type Person struct {
 	Age       int    `json:"age"`
 }
 
+type People []*Person
+
+func (p People) AverageAge() int {
+	return 0
+}
+
 func main() {
 	if len(os.Args) < 2 {
 		showHelp()
