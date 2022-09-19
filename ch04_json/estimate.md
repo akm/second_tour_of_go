@@ -78,3 +78,25 @@ ProductMap-->>main: Response
 
 最初はどこでどのインスタンスを作るのかをざっくり考える。
 この時点ではまだResponseItemをどう作るとかまでは考えていない。
+
+### シーケンス図その２
+
+```mermaid
+sequenceDiagram
+main->>ProductMap : new
+main->>Request : new
+main->>ProductMap : Estimate
+loop for each Request
+    ProductMap->>ProductMap : Get() ProductAttrs
+    ProductMap->>ResponseItem : new
+    ProductMap->>ResponseItem : Calculate(ProductAttrs)
+end
+ProductMap->>Response : new
+ProductMap->>Response : Calculate
+ProductMap-->>main: Response
+```
+
+どこで計算を行うのかを考えて決める。ここで細かいローカル変数などは考慮しない。
+主に型と型の間のやり取り（インスタンスの生成とメソッドの呼び出し）を考慮する。
+あくまで実装前のアイディア段階なので、実装したら変わってしまってもOKとする
+（設計作業の結果を設計図として残してメンテナンス対象とするなら話は別）。
