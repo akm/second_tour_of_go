@@ -25,3 +25,29 @@ EstimateResponseItem : Tax int
 ```
 
 ProductMap は `map[string]*ProductAttrs` で十分？
+
+### 名前が長いのでEstimateを除去する
+
+他に `Request` や `Response` を使うことは（今のところ）なさそうなので名前を短くしてしまう
+
+```mermaid
+classDiagram
+ProductMap *-- ProductAttrs
+ProductMap : get() ProductAttrs
+ProductAttrs : UnitPrice int
+ProductAttrs : ReducedRate bool
+Request *-- RequestItem
+Request : ClientName string
+RequestItem : ProductName string
+RequestItem : Quantity int
+Response *-- ResponseItem
+Response : ClientName string
+Response : EstimatedAt time.Time
+Response : SubTotal int
+Response : Tax int
+Response : Total int
+ResponseItem : Quantity int
+ResponseItem : SubTotal int
+ResponseItem : TaxRate int
+ResponseItem : Tax int
+```
