@@ -8,8 +8,8 @@ import (
 // 商品の属性を表す型
 // 商品JSONファイルをUnmarshalして生成されるので、されるので、コンストラクタは不要
 type ProductAttrs struct {
-	UnitPrice   int
-	ReducedRate bool
+	UnitPrice   int  `json:"unit_price"`
+	ReducedRate bool `json:"reduced_rate"`
 }
 
 func (m *ProductAttrs) TaxRate() int {
@@ -44,25 +44,25 @@ func (m ProductMap) Calculate(req Request) (*Response, error) {
 // 見積もりRequestを表す型
 // 見積もりRequestJSONファイルをUnmarshalして生成されるので、されるので、コンストラクタは不要
 type Request struct {
-	ClientName string
-	Items      []*RequestItem
+	ClientName string         `json:"client_name"`
+	Items      []*RequestItem `json:"items"`
 }
 
 // 見積もりの明細を表す型
 // 見積もりRequestJSONファイルをUnmarshalして生成されるので、されるので、コンストラクタは不要
 type RequestItem struct {
-	ProductName string
-	Quantity    int
+	ProductName string `json:"product_name"`
+	Quantity    int    `json:"quantity"`
 }
 
 // 見積もり結果を表す型
 type Response struct {
-	ClientName  string
-	EstimatedAt time.Time
-	SubTotal    int
-	Tax         int
-	Total       int
-	Items       []*ResponseItem
+	ClientName  string          `json:"client_name"`
+	EstimatedAt time.Time       `json:"estimated_at"`
+	SubTotal    int             `json:"sub_total"`
+	Tax         int             `json:"tax"`
+	Total       int             `json:"total"`
+	Items       []*ResponseItem `json:"items"`
 }
 
 func NewResponse(clientName string) *Response {
@@ -81,11 +81,11 @@ func (m *Response) Calculate() {
 
 // 見積もり結果の明細を表す型
 type ResponseItem struct {
-	ProductName string
-	Quantity    int
-	SubTotal    int
-	TaxRate     int
-	Tax         int
+	ProductName string `json:"product_name"`
+	Quantity    int    `json:"quantity"`
+	SubTotal    int    `json:"sub_total"`
+	TaxRate     int    `json:"tax_rate"`
+	Tax         int    `json:"tax"`
 }
 
 func NewResponseItem(productName string, attrs *ProductAttrs, quantity int) *ResponseItem {
