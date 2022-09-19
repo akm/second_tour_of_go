@@ -1,0 +1,7 @@
+{
+  "Apple": { "unit_price": 200, "reduced_rate": false },
+  "Orange": { "unit_price": 120, "reduced_rate": true },
+  "Banana": { "unit_price": 250, "reduced_rate": true },
+  "Kiwi Fruit": { "unit_price": 100, "reduced_rate": true },
+  "Lemon": { "unit_price": 150, "reduced_rate": false }
+}
