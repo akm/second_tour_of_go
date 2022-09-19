@@ -9,6 +9,14 @@ type ProductAttrs struct {
 	ReducedRate bool
 }
 
+func (m *ProductAttrs) TaxRate() int {
+	if m.ReducedRate {
+		return 8
+	} else {
+		return 10
+	}
+}
+
 // 商品名とProductAttrsを関連付けるmapを拡張した型
 // 商品JSONファイルをUnmarshalして生成されるので、されるので、コンストラクタは不要
 type ProductMap map[string]*ProductAttrs
@@ -62,5 +70,13 @@ type ResponseItem struct {
 }
 
 func NewResponseItem(productName string, attrs *ProductAttrs, quantity int) *ResponseItem {
-	return nil
+	subTotal := attrs.UnitPrice * quantity
+	taxRate := attrs.TaxRate()
+	return &ResponseItem{
+		ProductName: productName,
+		Quantity:    quantity,
+		SubTotal:    subTotal,
+		TaxRate:     taxRate,
+		Tax:         subTotal * taxRate / 100,
+	}
 }
