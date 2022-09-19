@@ -64,3 +64,17 @@ ProductMapとRequestからResponseを作るという処理なわけだが、Requ
 2. `ProductMap` のメソッドとして `Request` を引数にとる `Estimate` が `Response` を返す
 
 どちらかと言えば 2 の方が責務が分かれるので良さそう。
+
+### シーケンス図その1
+
+```mermaid
+sequenceDiagram
+main->>ProductMap : new
+main->>Request : new
+main->>ProductMap : Estimate
+ProductMap->>Response : new
+ProductMap-->>main: Response
+```
+
+最初はどこでどのインスタンスを作るのかをざっくり考える。
+この時点ではまだResponseItemをどう作るとかまでは考えていない。
