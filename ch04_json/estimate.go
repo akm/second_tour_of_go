@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 // 商品の属性を表す型
 // 商品JSONファイルをUnmarshalして生成されるので、されるので、コンストラクタは不要
@@ -25,8 +28,17 @@ func (m ProductMap) Get(product string) *ProductAttrs {
 	return m[product]
 }
 
-func (m ProductMap) Calculate(req Request) *Response {
-	return nil
+func (m ProductMap) Calculate(req Request) (*Response, error) {
+	res := NewResponse(req.ClientName)
+	for _, item := range req.Items {
+		attrs := m.Get(item.ProductName)
+		if attrs == nil {
+			return nil, fmt.Errorf("unknown product: %v", item.ProductName)
+		}
+		res.Items = append(res.Items, NewResponseItem(item.ProductName, attrs, item.Quantity))
+	}
+	res.Calculate()
+	return res, nil
 }
 
 // 見積もりRequestを表す型
@@ -54,10 +66,17 @@ type Response struct {
 }
 
 func NewResponse(clientName string) *Response {
-	return nil
+	return &Response{ClientName: clientName, EstimatedAt: time.Now()}
 }
 
 func (m *Response) Calculate() {
+	m.SubTotal = 0
+	m.Tax = 0
+	for _, item := range m.Items {
+		m.SubTotal += item.SubTotal
+		m.Tax += item.Tax
+	}
+	m.Total = m.SubTotal + m.Tax
 }
 
 // 見積もり結果の明細を表す型
