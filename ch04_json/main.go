@@ -71,6 +71,31 @@ func main() {
 			os.Exit(1)
 		}
 		fmt.Printf("%d people, average age: %d\n", len(people), people.AverageAge())
+	case "estimate":
+		if len(os.Args) < 4 {
+			showHelp()
+			os.Exit(1)
+		}
+		var productMap ProductMap
+		if err := readAndUnmarshal(os.Args[2], &productMap); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v", err)
+			os.Exit(1)
+		}
+		var request Request
+		if err := readAndUnmarshal(os.Args[3], &request); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v", err)
+			os.Exit(1)
+		}
+		res, err := productMap.Calculate(request)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v", err)
+		}
+		b, err := json.MarshalIndent(res, "", "  ")
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v", err)
+			os.Exit(1)
+		}
+		fmt.Println(string(b))
 	default:
 		showHelp()
 		os.Exit(1)
@@ -91,4 +116,6 @@ func showHelp() {
 	fmt.Printf("    Shows an example of JSON data\n")
 	fmt.Printf("  %s summary FILE\n", os.Args[0])
 	fmt.Printf("    Shows summary of people from FILE\n")
+	fmt.Printf("  %s estimate PRODUCT_FILE REQUEST_FILE\n", os.Args[0])
+	fmt.Printf("    Shows estimate for REQUEST_FILE with PRODUCT_FILE\n")
 }
