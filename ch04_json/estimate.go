@@ -14,7 +14,7 @@ type ProductAttrs struct {
 type ProductMap map[string]*ProductAttrs
 
 func (m ProductMap) Get(product string) *ProductAttrs {
-	return nil
+	return m[product]
 }
 
 func (m ProductMap) Calculate(req Request) *Response {
