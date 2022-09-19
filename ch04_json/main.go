@@ -66,18 +66,23 @@ func main() {
 			showHelp()
 			os.Exit(1)
 		}
-		b, err := os.ReadFile(os.Args[2])
-		if err != nil {
-			panic(err)
-		}
-		if err := json.Unmarshal(b, &people); err != nil {
-			panic(err)
+		if err := readAndUnmarshal(os.Args[2], &people); err != nil {
+			fmt.Fprintf(os.Stderr, "error: %v", err)
+			os.Exit(1)
 		}
 		fmt.Printf("%d people, average age: %d\n", len(people), people.AverageAge())
 	default:
 		showHelp()
 		os.Exit(1)
 	}
+}
+
+func readAndUnmarshal(path string, dest interface{}) error {
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(b, dest)
 }
 
 func showHelp() {
