@@ -29,7 +29,7 @@ func TestProductMapGet(t *testing.T) {
 
 func TestProductMapCalculate(t *testing.T) {
 	m := newTestProductMap()
-	res := m.Calculate(Request{
+	res, err := m.Calculate(Request{
 		ClientName: "John Smith",
 		Items: []*RequestItem{
 			{ProductName: "Apple", Quantity: 2},
@@ -37,6 +37,9 @@ func TestProductMapCalculate(t *testing.T) {
 			{ProductName: "Banana", Quantity: 4},
 		},
 	})
+	if err != nil {
+		t.Errorf("m.Calculate() = %v, want nil", err)
+	}
 	if res == nil {
 		t.Fatalf("m.Calculate() = nil, want not nil")
 	}
