@@ -51,3 +51,16 @@ ResponseItem : SubTotal int
 ResponseItem : TaxRate int
 ResponseItem : Tax int
 ```
+
+## メソッドの呼び出しを決める
+
+### どうあるべきかを考える
+
+ProductMapとRequestからResponseを作るという処理なわけだが、RequestとResponseが対称的なものなので、
+引数にRequestを取ってResponseを返すというのがわかりやすそう。
+そうするとProductMapの使い方としては以下の２つがありそう。
+
+1. グローバルな `Estimate` 関数に引数として `ProductMap` と `Request` を渡して `Response` を返す
+2. `ProductMap` のメソッドとして `Request` を引数にとる `Estimate` が `Response` を返す
+
+どちらかと言えば 2 の方が責務が分かれるので良さそう。
