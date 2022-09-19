@@ -58,24 +58,26 @@ func TestProductMapCalculate(t *testing.T) {
 	if len(res.Items) != 3 {
 		t.Fatalf("len(res.Items) = %v, want 3", len(res.Items))
 	}
-	assertItem := func(actual *ResponseItem, productName string, qty, subTotal, taxRate, tax int) {
-		if actual.ProductName != productName {
-			t.Errorf("actual.ProductName = %v, want %v", actual.ProductName, productName)
-		}
-		if actual.Quantity != qty {
-			t.Errorf("actual.Quantity = %v, want %v", actual.Quantity, qty)
-		}
-		if actual.SubTotal != subTotal {
-			t.Errorf("actual.SubTotal = %v, want %v", actual.SubTotal, subTotal)
-		}
-		if actual.TaxRate != taxRate {
-			t.Errorf("actual.TaxRate = %v, want %v", actual.TaxRate, taxRate)
-		}
-		if actual.Tax != tax {
-			t.Errorf("actual.Tax = %v, want %v", actual.Tax, tax)
-		}
+
+	assertResponseItem(t, res.Items[0], "Apple", 2, 2*200, 10, 2*200*10/100)
+	assertResponseItem(t, res.Items[1], "Orange", 3, 3*120, 8, 3*120*8/100)
+	assertResponseItem(t, res.Items[2], "Banana", 4, 4*250, 8, 4*250*8/100)
+}
+
+func assertResponseItem(t *testing.T, actual *ResponseItem, productName string, qty, subTotal, taxRate, tax int) {
+	if actual.ProductName != productName {
+		t.Errorf("actual.ProductName = %v, want %v", actual.ProductName, productName)
 	}
-	assertItem(res.Items[0], "Apple", 2, 2*200, 10, 2*200*10/100)
-	assertItem(res.Items[1], "Orange", 3, 3*120, 8, 3*120*8/100)
-	assertItem(res.Items[2], "Banana", 4, 4*250, 8, 4*250*8/100)
+	if actual.Quantity != qty {
+		t.Errorf("actual.Quantity = %v, want %v", actual.Quantity, qty)
+	}
+	if actual.SubTotal != subTotal {
+		t.Errorf("actual.SubTotal = %v, want %v", actual.SubTotal, subTotal)
+	}
+	if actual.TaxRate != taxRate {
+		t.Errorf("actual.TaxRate = %v, want %v", actual.TaxRate, taxRate)
+	}
+	if actual.Tax != tax {
+		t.Errorf("actual.Tax = %v, want %v", actual.Tax, tax)
+	}
 }
