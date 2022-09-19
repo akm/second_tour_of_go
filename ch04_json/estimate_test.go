@@ -66,6 +66,21 @@ func TestProductMapCalculate(t *testing.T) {
 		assertResponseItem(t, res.Items[1], "Orange", 3, 3*120, 8, 3*120*8/100)
 		assertResponseItem(t, res.Items[2], "Banana", 4, 4*250, 8, 4*250*8/100)
 	})
+
+	t.Run("including unknown product", func(t *testing.T) {
+		m := newTestProductMap()
+		_, err := m.Calculate(Request{
+			ClientName: "John Smith",
+			Items: []*RequestItem{
+				{ProductName: "Apple", Quantity: 2},
+				{ProductName: "Grape", Quantity: 3},
+				{ProductName: "Banana", Quantity: 4},
+			},
+		})
+		if err == nil {
+			t.Errorf("m.Calculate() should be return an error")
+		}
+	})
 }
 
 func assertResponseItem(t *testing.T, actual *ResponseItem, productName string, qty, subTotal, taxRate, tax int) {
