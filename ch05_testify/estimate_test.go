@@ -48,11 +48,11 @@ func TestProductMapCalculate(t *testing.T) {
 		assert.Equal(t, 2*200+3*120+4*250, res.SubTotal)
 		assert.Equal(t, 2*200*10/100+3*120*8/100+4*250*8/100, res.Tax)
 		assert.Equal(t, 2*200+3*120+4*250+2*200*10/100+3*120*8/100+4*250*8/100, res.Total)
-		if assert.Len(t, res.Items, 3) {
-			assertResponseItem(t, res.Items[0], "Apple", 2, 2*200, 10, 2*200*10/100)
-			assertResponseItem(t, res.Items[1], "Orange", 3, 3*120, 8, 3*120*8/100)
-			assertResponseItem(t, res.Items[2], "Banana", 4, 4*250, 8, 4*250*8/100)
-		}
+		assert.Equal(t, []*ResponseItem{
+			{ProductName: "Apple", Quantity: 2, SubTotal: 2 * 200, TaxRate: 10, Tax: 2 * 200 * 10 / 100},
+			{ProductName: "Orange", Quantity: 3, SubTotal: 3 * 120, TaxRate: 8, Tax: 3 * 120 * 8 / 100},
+			{ProductName: "Banana", Quantity: 4, SubTotal: 4 * 250, TaxRate: 8, Tax: 4 * 250 * 8 / 100},
+		}, res.Items)
 	})
 
 	t.Run("including unknown product", func(t *testing.T) {
@@ -69,23 +69,14 @@ func TestProductMapCalculate(t *testing.T) {
 	})
 }
 
-func assertResponseItem(t *testing.T, actual *ResponseItem, productName string, qty, subTotal, taxRate, tax int) {
-	require.NotNil(t, actual)
-	assert.Equal(t, productName, actual.ProductName)
-	assert.Equal(t, qty, actual.Quantity)
-	assert.Equal(t, subTotal, actual.SubTotal)
-	assert.Equal(t, taxRate, actual.TaxRate)
-	assert.Equal(t, tax, actual.Tax)
-}
-
 func TestNewResponseItem(t *testing.T) {
 	m := newTestProductMap()
-	assertResponseItem(t,
+	assert.Equal(t,
 		NewResponseItem("Apple", m.Get("Apple"), 2),
-		"Apple", 2, 2*200, 10, 2*200*10/100,
+		&ResponseItem{ProductName: "Apple", Quantity: 2, SubTotal: 2 * 200, TaxRate: 10, Tax: 2 * 200 * 10 / 100},
 	)
-	assertResponseItem(t,
+	assert.Equal(t,
 		NewResponseItem("Orange", m.Get("Orange"), 3),
-		"Orange", 3, 3*120, 8, 3*120*8/100,
+		&ResponseItem{ProductName: "Orange", Quantity: 3, SubTotal: 3 * 120, TaxRate: 8, Tax: 3 * 120 * 8 / 100},
 	)
 }
