@@ -66,7 +66,7 @@ type Response struct {
 }
 
 func NewResponse(clientName string) *Response {
-	return &Response{ClientName: clientName, EstimatedAt: time.Now()}
+	return &Response{ClientName: clientName, EstimatedAt: Now()}
 }
 
 func (m *Response) Calculate() {
