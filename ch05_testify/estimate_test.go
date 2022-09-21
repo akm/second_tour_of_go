@@ -2,6 +2,7 @@ package main
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -32,6 +33,10 @@ func TestProductMapGet(t *testing.T) {
 
 func TestProductMapCalculate(t *testing.T) {
 	t.Run("basic pattern", func(t *testing.T) {
+		now := time.Now()
+		NowFunc = func() time.Time { return now }
+		defer func() { NowFunc = time.Now }()
+
 		m := newTestProductMap()
 		res, err := m.Calculate(Request{
 			ClientName: "John Smith",
@@ -44,7 +49,7 @@ func TestProductMapCalculate(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, res)
 		assert.Equal(t, "John Smith", res.ClientName)
-		assert.False(t, res.EstimatedAt.IsZero())
+		assert.Equal(t, now, res.EstimatedAt)
 		assert.Equal(t, 2*200+3*120+4*250, res.SubTotal)
 		assert.Equal(t, 2*200*10/100+3*120*8/100+4*250*8/100, res.Tax)
 		assert.Equal(t, 2*200+3*120+4*250+2*200*10/100+3*120*8/100+4*250*8/100, res.Total)
