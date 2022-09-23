@@ -11,3 +11,15 @@ JSONの章では、JSONを使ったCLIアプリケーションのテストを作
     - すでに `ch05_testify` ディレクトリが存在する場合はこのREADME.md以外のファイルをコピーして上書きしてください
     - `ch04_json` ディレクトリは [ch04_json/end タグ](https://github.com/akm/second_tour_of_go/releases/tag/ch04_json%2Fend) からソースコードをダウンロード・解凍して取得することもできます
 2. `ch05_testify/go.mod` をエディタで編集し、モジュールパス中の `ch04_json` を `ch05_testify` に変更してください
+
+
+## :exclamation: testifyの導入
+
+Goの標準ライブラリ [testing](https://pkg.go.dev/testing) は最低限の機能しか持っていないので、ややこしいテストを行おうとするとテストのコードも複雑になります。
+それを解消するべく簡単にテストを作成できるようにするためのライブラリが [testify](https://github.com/stretchr/testify) です。以下のコマンドを実行して
+インストールしてください。
+
+```
+cd path/to/ch05_testify
+go get github.com/stretchr/testify
+```
