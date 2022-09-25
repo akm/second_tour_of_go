@@ -43,3 +43,38 @@ go get github.com/stretchr/testify
 3. `assertResponseItem` を削除してください
 
 以上を行った上で、これまでと同じ動作をするように変更してください。
+
+
+## :question: モックの時刻を使ったテスト
+
+上の問題の `ResponseItem` の比較のように `Response` 型についても同じように構造体をまるごと比較したいところです。
+しかし `Response` 型の `EstimatedAt` フィールドは `time.Time` 型で、実行時の時刻を保持するため、このままでは `ResponseItem` のように
+特定の値をフィールドに指定して比較することは難しいです。
+
+これを解決するために `EstimatedAt` に代入する値を `time.Now` から直接取得するのではなく、テスト時に時刻を変更可能な方法に変更します。
+以下の手順に従ってテストを変更してください。
+
+1. `time.go` ファイルを以下の内容で作成します
+    ```golang
+    package main
+
+    import "time"
+
+    var NowFunc = time.Now
+
+    func Now() time.Time {
+        return NowFunc()
+    }
+    ```
+2. `estimate.go` を `time.Now` ではなく、追加した `Now` 関数を使うように変更
+3. `TestProductMapCalculate` の `basic pattern` の関数の先頭に以下を追加
+    ```golang
+    now := time.Now()
+    NowFunc = func() time.Time { return now }
+    defer func() { NowFunc = time.Now }()
+    ```
+4. `res.EstimatedAt` のアサーションを以下のように変更
+    ```golang
+    assert.Equal(t, now, res.EstimatedAt)
+    ```
+5. `res` に関する７つのアサーションを１つの `require.Equals` に変更する
