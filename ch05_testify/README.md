@@ -32,3 +32,14 @@ go get github.com/stretchr/testify
 - [github.com/stretchr/testify/require](https://pkg.go.dev/github.com/stretchr/testify/require)
 
 その上で [estimate_test.go](./estimate_test.go) を `assert` パッケージ や `require` パッケージを使うように変更してください。
+
+
+## :question: まるごと比較するように変更
+
+構造体の各フィールドを比較する関数 `assertResponseItem` を削除し、代わりに構造体のポインタやそのポインタのスライスの中身を比較するように変更します。
+
+1. `assert.Len` と `assertResponseItem` を3回呼び出している部分を 一つの `assert.Equal` を使うように変更してください
+2. `TestNewResponseItem` で `assertResponseItem` を呼び出している部分を `assert.Equal` を使うように変更してください
+3. `assertResponseItem` を削除してください
+
+以上を行った上で、これまでと同じ動作をするように変更してください。
