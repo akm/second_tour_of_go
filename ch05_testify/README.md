@@ -23,3 +23,12 @@ Goの標準ライブラリ [testing](https://pkg.go.dev/testing) は最低限の
 cd path/to/ch05_testify
 go get github.com/stretchr/testify
 ```
+
+## :question: assertとrequireを使うように変更
+
+[testify](https://github.com/stretchr/testify) のREADME.md と、以下のパッケージのドキュメントを読んでください。
+
+- [github.com/stretchr/testify/assert](https://pkg.go.dev/github.com/stretchr/testify/assert)
+- [github.com/stretchr/testify/require](https://pkg.go.dev/github.com/stretchr/testify/require)
+
+その上で [estimate_test.go](./estimate_test.go) を `assert` パッケージ や `require` パッケージを使うように変更してください。
