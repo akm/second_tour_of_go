@@ -21,3 +21,7 @@ type Rect struct {
 	width, length int
 	Point         *Point
 }
+
+func (r *Rect) Area() int {
+	return r.width * r.length
+}
