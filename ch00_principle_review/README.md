@@ -3,7 +3,7 @@
 ## Q1. [Goの基礎](https://astaxie.gitbooks.io/build-web-application-with-golang/content/ja/02.2.html) の `make, new操作`
 
 図にで示されている `Point` `Circle` `Rect` を struct を使って定義してください。
-また、以下のデータを new して生成し、 `fmt.Printf("%+v\n", ...)` を使って出力してください。
+また、以下のデータを new して生成し、 `fmt.Printf("%#v\n", ...)` を使って出力してください。
 
 1. Px: 100, Py: 50 を持つPoint のデータのポインタ p1
 2. Point: p1, radius: 30 を持つCircle のデータのポインタ c1
