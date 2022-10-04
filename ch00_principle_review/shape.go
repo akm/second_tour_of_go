@@ -2,6 +2,10 @@ package main
 
 import "math"
 
+type Shape interface {
+	Area() float64
+}
+
 type Point struct {
 	Px, Py int
 }
