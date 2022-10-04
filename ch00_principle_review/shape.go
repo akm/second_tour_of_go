@@ -25,3 +25,15 @@ type Rect struct {
 func (r *Rect) Area() int {
 	return r.width * r.length
 }
+
+type RectList []*Rect
+
+func (s RectList) Biggest() *Rect {
+	var biggest *Rect
+	for _, r := range s {
+		if biggest == nil || r.Area() > biggest.Area() {
+			biggest = r
+		}
+	}
+	return biggest
+}
