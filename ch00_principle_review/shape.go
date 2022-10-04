@@ -1,5 +1,7 @@
 package main
 
+import "math"
+
 type Point struct {
 	Px, Py int
 }
@@ -15,6 +17,10 @@ func NewCircle(p *Point, r int) *Circle {
 
 func (c *Circle) Expand(dr int) {
 	c.radius += dr
+}
+
+func (c *Circle) Area() float64 {
+	return math.Pi * float64(c.radius*c.radius)
 }
 
 type Rect struct {
