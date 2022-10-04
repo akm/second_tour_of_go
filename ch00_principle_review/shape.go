@@ -13,7 +13,7 @@ func NewCircle(p *Point, r int) *Circle {
 	return &Circle{Point: p, radius: r}
 }
 
-func ExpandCircle(c *Circle, dr int) {
+func (c *Circle) Expand(dr int) {
 	c.radius += dr
 }
 

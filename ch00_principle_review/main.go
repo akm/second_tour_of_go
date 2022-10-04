@@ -9,7 +9,7 @@ func main() {
 	c1 := NewCircle(p1, 30)
 	fmt.Printf("%#v\n", c1)
 
-	ExpandCircle(c1, 10)
+	c1.Expand(10)
 	fmt.Printf("%#v\n", c1)
 
 	r1 := &Rect{Point: p1, width: 20, length: 10}
