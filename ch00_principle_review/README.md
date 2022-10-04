@@ -31,7 +31,7 @@
 ## Q4. [interface](https://astaxie.gitbooks.io/build-web-application-with-golang/content/ja/02.6.html)
 
 1. この章をすべて読んでください
-1. 面積を求めるメソッド `Area` を持つinterface `Shape` を定義してください
+1. 面積を求めるメソッド `Area() float64` を持つinterface `Shape` を定義してください
 1. `Rect` と `Circle` を `Shape` として使えるように変更してください
     円の面積は `円周率 * 半径 * 半径` で求められます。円周率は [math.Pi](https://pkg.go.dev/math#pkg-constants) で求められます。
 1. 最も面積が大きな `Shape` を返すメソッド `Biggest` を持つ `Shapes` を `[]Shape` から作成してください。
