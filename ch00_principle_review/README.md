@@ -24,6 +24,7 @@
 
 1. この章をすべて読んでください
 1. Q2で作成した  `ExpandCircle` を `*Circle` のメソッド `Expand` として作り直してください
+1. `*Rect` に面積を求めるメソッド `Area() int` を追加してください
 1. BoxList を参考に 最も大きな面積の `Rect` (のポインタ) を返すメソッド `Biggest` を持つ `RectList` を `[]*Rect` から作成してください。
    (ヒント Biggest のレシーバーは RectListのポインタを使いません)
 
