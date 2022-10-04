@@ -14,4 +14,9 @@ func main() {
 
 	r1 := &Rect{Point: p1, width: 20, length: 10}
 	fmt.Printf("%#v\n", r1)
+
+	r2 := &Rect{Point: p1, width: 20, length: 5}
+	r3 := &Rect{Point: p1, width: 50, length: 5}
+	r4 := &Rect{Point: p1, width: 10, length: 10}
+	fmt.Printf("Biggest: %#v\n", RectList([]*Rect{r1, r2, r3, r4}).Biggest())
 }
