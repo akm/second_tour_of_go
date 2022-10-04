@@ -22,8 +22,8 @@ type Rect struct {
 	Point         *Point
 }
 
-func (r *Rect) Area() int {
-	return r.width * r.length
+func (r *Rect) Area() float64 {
+	return float64(r.width * r.length)
 }
 
 type RectList []*Rect
