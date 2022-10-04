@@ -6,6 +6,18 @@ type Shape interface {
 	Area() float64
 }
 
+type Shapes []Shape
+
+func (s Shapes) Biggest() Shape {
+	var biggest Shape
+	for _, sh := range s {
+		if biggest == nil || sh.Area() > biggest.Area() {
+			biggest = sh
+		}
+	}
+	return biggest
+}
+
 type Point struct {
 	Px, Py int
 }
