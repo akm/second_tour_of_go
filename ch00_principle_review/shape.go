@@ -19,6 +19,12 @@ func (s Shapes) Biggest() Shape {
 	return biggest
 }
 
+func (s Shapes) MoveBy(dx, dy int) {
+	for _, sh := range s {
+		sh.MoveBy(dx, dy)
+	}
+}
+
 type Point struct {
 	Px, Py int
 }
