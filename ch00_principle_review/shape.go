@@ -4,6 +4,7 @@ import "math"
 
 type Shape interface {
 	Area() float64
+	MoveBy(dx, dy int)
 }
 
 type Shapes []Shape
@@ -20,6 +21,11 @@ func (s Shapes) Biggest() Shape {
 
 type Point struct {
 	Px, Py int
+}
+
+func (p *Point) MoveBy(dx, dy int) {
+	p.Px += dx
+	p.Py += dy
 }
 
 type Circle struct {
@@ -39,6 +45,10 @@ func (c *Circle) Area() float64 {
 	return math.Pi * float64(c.radius*c.radius)
 }
 
+func (c *Circle) MoveBy(dx, dy int) {
+	c.Point.MoveBy(dx, dy)
+}
+
 type Rect struct {
 	width, length int
 	Point         *Point
@@ -46,6 +56,10 @@ type Rect struct {
 
 func (r *Rect) Area() float64 {
 	return float64(r.width * r.length)
+}
+
+func (r *Rect) MoveBy(dx, dy int) {
+	r.Point.MoveBy(dx, dy)
 }
 
 type RectList []*Rect
