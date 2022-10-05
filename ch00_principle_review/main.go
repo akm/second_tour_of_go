@@ -23,5 +23,8 @@ func main() {
 		&Circle{Point: p1, radius: 20},
 		&Rect{Point: p1, width: 10, length: 10},
 	}
+	fmt.Printf("shapes: %#v\n", shapes)
 	fmt.Printf("Biggest: %#v\n", shapes.Biggest())
+	shapes.MoveBy(10, 10)
+	fmt.Printf("shapes: %#v\n", shapes)
 }
