@@ -62,6 +62,10 @@ func (c *Circle) MoveBy(dx, dy int) {
 	c.Point.MoveBy(dx, dy)
 }
 
+func (c *Circle) GoString() string {
+	return fmt.Sprintf("%#v", *c)
+}
+
 type Rect struct {
 	width, length int
 	Point         *Point
@@ -73,6 +77,10 @@ func (r *Rect) Area() float64 {
 
 func (r *Rect) MoveBy(dx, dy int) {
 	r.Point.MoveBy(dx, dy)
+}
+
+func (r *Rect) GoString() string {
+	return fmt.Sprintf("%#v", *r)
 }
 
 type RectList []*Rect
