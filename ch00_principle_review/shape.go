@@ -1,6 +1,9 @@
 package main
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 type Shape interface {
 	Area() float64
@@ -32,6 +35,10 @@ type Point struct {
 func (p *Point) MoveBy(dx, dy int) {
 	p.Px += dx
 	p.Py += dy
+}
+
+func (p *Point) GoString() string {
+	return fmt.Sprintf("Point{Px: %d, Py: %d}", p.Px, p.Py)
 }
 
 type Circle struct {
