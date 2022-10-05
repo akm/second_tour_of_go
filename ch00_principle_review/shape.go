@@ -23,13 +23,19 @@ func (s Shapes) Biggest() Shape {
 	return biggest
 }
 
+func (s Shapes) Points() Points {
+	r := Points{}
+	for _, i := range s {
+		if !r.Include(i.BasePoint()) {
+			r = append(r, i.BasePoint())
+		}
+	}
+	return r
+}
+
 func (s Shapes) MoveBy(dx, dy int) {
-	/**
-	 * この実装だと、同じPointのインスタンスを共有している Rect あるいは Circle の Point に対して
-	 * 何度も MoveBy が呼ばれてしまい、その都度 Point の値に加算し、想定していない結果になることがある。
-	 */
-	for _, sh := range s {
-		sh.MoveBy(dx, dy)
+	for _, p := range s.Points() {
+		p.MoveBy(dx, dy)
 	}
 }
 
