@@ -45,6 +45,17 @@ func (p *Point) GoString() string {
 	return fmt.Sprintf("Point{Px: %d, Py: %d}", p.Px, p.Py)
 }
 
+type Points []*Point
+
+func (s Points) Include(p *Point) bool {
+	for _, i := range s {
+		if i == p {
+			return true
+		}
+	}
+	return false
+}
+
 type Circle struct {
 	radius int
 	Point  *Point
