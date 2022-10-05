@@ -23,6 +23,10 @@ func (s Shapes) Biggest() Shape {
 }
 
 func (s Shapes) MoveBy(dx, dy int) {
+	/**
+	 * この実装だと、同じPointのインスタンスを共有している Rect あるいは Circle の Point に対して
+	 * 何度も MoveBy が呼ばれてしまい、その都度 Point の値に加算し、想定していない結果になることがある。
+	 */
 	for _, sh := range s {
 		sh.MoveBy(dx, dy)
 	}
