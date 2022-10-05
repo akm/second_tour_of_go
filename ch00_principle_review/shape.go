@@ -8,6 +8,7 @@ import (
 type Shape interface {
 	Area() float64
 	MoveBy(dx, dy int)
+	BasePoint() *Point
 }
 
 type Shapes []Shape
@@ -61,8 +62,14 @@ type Circle struct {
 	Point  *Point
 }
 
+var _ Shape = (*Circle)(nil)
+
 func NewCircle(p *Point, r int) *Circle {
 	return &Circle{Point: p, radius: r}
+}
+
+func (c *Circle) BasePoint() *Point {
+	return c.Point
 }
 
 func (c *Circle) Expand(dr int) {
@@ -84,6 +91,12 @@ func (c *Circle) GoString() string {
 type Rect struct {
 	width, length int
 	Point         *Point
+}
+
+var _ Shape = (*Rect)(nil)
+
+func (c *Rect) BasePoint() *Point {
+	return c.Point
 }
 
 func (r *Rect) Area() float64 {
