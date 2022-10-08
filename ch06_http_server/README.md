@@ -1,0 +1,38 @@
+# HTTPサーバー
+
+## 予習してきてください
+
+### URL
+
+[MDN ウェブ開発を学ぶ - URL とは？](https://developer.mozilla.org/ja/docs/Learn/Common_questions/What_is_a_URL) と
+[MDN Guides - What is a URL?](https://developer.mozilla.org/ja/docs/Learn/Common_questions/What_is_a_URL) を読んで以下の質問に答えてください。
+
+1. URLを構成する６つの要素を英語で言うと何と言いますか？
+2. 以下のURLをそれぞれ６つの要素に分類してください
+    1. http://localhost:8080/hello
+    2. http://localhost/
+    3. https://developer.mozilla.org/en-US/search?q=URL&page=2
+    4. https://github.com/akm/second_tour_of_go/pull/2/files?diff=split&w=1#diff-78728faaaba530c64071edff8afd0d30a8d1103bfd75e27c8c34a690526e831d
+
+### HTTP
+
+[MDN 開発者向けのウェブ技術 - HTTPガイド](https://developer.mozilla.org/ja/docs/Web/HTTP/Basics_of_HTTP) と [とほほのWWW入門 - HTTP入門](https://www.tohoho-web.com/ex/http.htm) から調べて以下の質問に答えてください。特にHTTPの用語は英語をベースに使うので[MDN 開発者向けのウェブ技術 - HTTP メッセージ](https://developer.mozilla.org/ja/docs/Web/HTTP/Messages) と [MDN References - HTTP Messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages) を見比べてください。
+
+1. 「HTTPは○○である」。○○に該当する単語は？
+2. HTTPリクエストを構成する３つの要素を英語では何と言いますか？
+3. HTTPレスポンスを構成する３つの要素を英語では何と言いますか？
+4. 以下のそれぞれの場合に、一般的にどのHTTPメソッドを使いますか？
+    1. サーバーから情報を取得するとき
+    2. サーバーにデータを追加するとき
+    3. サーバーのデータを削除するとき
+5. 以下のそれぞれの場合に使用するHTTPステータスコードは何ですか？
+    1. 正常にレスポンスを返した場合
+    2. クライアントが送信したリクエストが不正な場合
+    3. 対象のデータが存在しない場合
+    4. 認証できなかった場合
+    5. 権限がなかった場合
+    6. サーバーで何らかのエラーが発生した場合
+6. curl コマンドがインストールされ使用できることを確認すしてください
+    - `curl -v` でヘルプメッセージが表示されればOKです
+    - MacやWindows 10以降ならば標準でインストールされているはずです
+    - 万が一使えない場合は、使えるようにしておいてください
