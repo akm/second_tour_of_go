@@ -36,3 +36,16 @@
     - `curl -v` でヘルプメッセージが表示されればOKです
     - MacやWindows 10以降ならば標準でインストールされているはずです
     - 万が一使えない場合は、使えるようにしておいてください
+
+## :exclamation: Hello, world!
+
+1. `ch06_http_server` ディレクトリがなければ作成し `go mod init github.com/akm/second_tour_of_go/ch06_http_server` を実行してください
+2. [http.ListenAndServe の Example](https://pkg.go.dev/net/http#example-ListenAndServe) を写経（あるいはコピー）して`main.go` を作成してください。
+3. `go run .` を実行し、別のターミナルでcurlコマンドを以下のように色々試してみてください
+    - URL
+        - http://localhost:8080/
+        - http://localhost:8080/hello
+        - http://localhost:8080/hoge
+        - http://localhost:8080/hellohello
+    - `-v` or `-i` オプション
+    - `-X GET` , `-X POST` など
