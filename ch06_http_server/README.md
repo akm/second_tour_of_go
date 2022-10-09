@@ -49,3 +49,35 @@
         - http://localhost:8080/hellohello
     - `-v` or `-i` オプション
     - `-X GET` , `-X POST` など
+
+## :question: Echoサーバー
+
+1. main.goをリクエストの内容を以下のようにレスポンスのボディとして返すEchoサーバーに作り変えてください。エラーが発生した場合はステータスコード `500 Internal Server Error` のレスポンスを返してください
+   ```
+   --start line--
+   method: (メソッド)
+   scheme: (URLのscheme)
+   domain: (URLのdomain)
+   port: (URLのport)
+   path: (URLのpath)
+   parameters: (URLのparameters のキー毎に以下を出力）
+     (パラメータのキー): (パラメータの値をカンマで区切った文字列)
+   anchor: (URLのanchor)
+
+   --headers--
+   (ヘッダーのキー): (ヘッダーの値をカンマで区切ったもの)
+   ....
+
+   --body--
+   (ボディの内容)
+   ```
+    - ヒント
+        - `fmt.Fprintf(w, "--start line--\n")`
+        - `start line` のデータの中には取得できないものがいくつかあります。
+2. curlを使って色々なリクエストを送ってみてください。Hello, world! のときに指定したオプションに加え、以下のオプションも指定してみてください。
+    - URLのパラメータ `?baz=300`
+    - URLのパラメータ `?key=foo&key=bar`
+    - URLのアンカー `abc`
+    - `-H "X-Foo: 100"`
+    - `-H "X-Foo: 100" -H "X-Foo: 200"`
+    - `--data '{"foo":100,"bar":200}'`
