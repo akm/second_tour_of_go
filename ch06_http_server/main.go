@@ -16,11 +16,13 @@ func main() {
 			return
 		}
 
+		hostParts := strings.SplitN(req.Host, ":", 2)
+
 		fmt.Fprintf(w, "--start line--\n")
 		fmt.Fprintf(w, "method: %s\n", req.Method)
 		fmt.Fprintf(w, "scheme: %s\n", req.URL.Scheme)
-		fmt.Fprintf(w, "domain: %s\n", req.URL.Hostname())
-		fmt.Fprintf(w, "port: %s\n", req.URL.Port())
+		fmt.Fprintf(w, "domain: %s\n", hostParts[0])
+		fmt.Fprintf(w, "port: %s\n", hostParts[1])
 		fmt.Fprintf(w, "path: %s\n", req.URL.Path)
 		fmt.Fprintf(w, "parameters:\n")
 		for k, values := range req.URL.Query() {
