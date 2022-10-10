@@ -14,7 +14,9 @@ func TestHandler(t *testing.T) {
 	textResponse := func(method, path string, result string) func(t *testing.T) {
 		return func(t *testing.T) {
 			w := httptest.NewRecorder()
-			handler(w, httptest.NewRequest(method, path, nil))
+			req := httptest.NewRequest(method, path, nil)
+			req.Host = "localhost:8080"
+			handler(w, req)
 			resp := w.Result()
 			assert.Equal(t, http.StatusOK, resp.StatusCode)
 			body, err := ioutil.ReadAll(resp.Body)
@@ -35,6 +37,7 @@ func TestHandler(t *testing.T) {
 	t.Run("add", func(t *testing.T) {
 		t.Run("valid case1", textResponse("GET", "/add?a=1&b=2", "3"))
 		t.Run("valid case1", textResponse("GET", "/add?a=100&b=200", "300"))
+		t.Run("with debug", textResponse("GET", "/add?a=100&b=200&debug=1", "300"))
 		t.Run("no parameters", errorResponse("GET", "/add", http.StatusBadRequest))
 		t.Run("without b", errorResponse("GET", "/add?a=100", http.StatusBadRequest))
 		t.Run("without a", errorResponse("GET", "/add?b=100", http.StatusBadRequest))
