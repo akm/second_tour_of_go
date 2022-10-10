@@ -33,13 +33,13 @@ func TestHandler(t *testing.T) {
 	}
 
 	t.Run("add", func(t *testing.T) {
-		t.Run("GET", textResponse("GET", "/add?a=1&b=2", "3"))
-		t.Run("GET", textResponse("GET", "/add?a=100&b=200", "300"))
-		t.Run("GET", errorResponse("GET", "/add", http.StatusBadRequest))
-		t.Run("GET", errorResponse("GET", "/add?a=100", http.StatusBadRequest))
-		t.Run("GET", errorResponse("GET", "/add?b=100", http.StatusBadRequest))
-		t.Run("GET", errorResponse("GET", "/add?a=foo&bar=200", http.StatusBadRequest))
-		t.Run("GET", errorResponse("GET", "/add?a=100&bar=bar", http.StatusBadRequest))
+		t.Run("valid case1", textResponse("GET", "/add?a=1&b=2", "3"))
+		t.Run("valid case1", textResponse("GET", "/add?a=100&b=200", "300"))
+		t.Run("no parameters", errorResponse("GET", "/add", http.StatusBadRequest))
+		t.Run("without b", errorResponse("GET", "/add?a=100", http.StatusBadRequest))
+		t.Run("without a", errorResponse("GET", "/add?b=100", http.StatusBadRequest))
+		t.Run("invalid a", errorResponse("GET", "/add?a=foo&bar=200", http.StatusBadRequest))
+		t.Run("invalid b", errorResponse("GET", "/add?a=100&bar=bar", http.StatusBadRequest))
 		t.Run("POST", errorResponse("POST", "/add?a=1&b=2", http.StatusMethodNotAllowed))
 	})
 }
