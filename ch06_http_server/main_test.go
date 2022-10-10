@@ -44,6 +44,12 @@ func TestHandler(t *testing.T) {
 		t.Run("GET", func(t *testing.T) {
 			assertError(t, "GET", "/add?b=100", http.StatusBadRequest)
 		})
+		t.Run("GET", func(t *testing.T) {
+			assertError(t, "GET", "/add?a=foo&bar=200", http.StatusBadRequest)
+		})
+		t.Run("GET", func(t *testing.T) {
+			assertError(t, "GET", "/add?a=100&bar=bar", http.StatusBadRequest)
+		})
 		t.Run("POST", func(t *testing.T) {
 			assertError(t, "POST", "/add?a=1&b=2", http.StatusMethodNotAllowed)
 		})
