@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -59,5 +60,42 @@ func TestHandler(t *testing.T) {
 		t.Run("invalid a", errorResponse(newReq("GET", "/subtract/foo/200"), http.StatusBadRequest))
 		t.Run("invalid b", errorResponse(newReq("GET", "/subtract/100/bar"), http.StatusBadRequest))
 		t.Run("POST", errorResponse(newReq("POST", "/subtract/1/2"), http.StatusMethodNotAllowed))
+	})
+
+	jsonResponse := func(req *http.Request, expectedResult float64) func(t *testing.T) {
+		return func(t *testing.T) {
+			w := httptest.NewRecorder()
+			handler(w, req)
+			resp := w.Result()
+			assert.Equal(t, http.StatusOK, resp.StatusCode)
+			body, err := ioutil.ReadAll(resp.Body)
+			assert.NoError(t, err)
+			var resData map[string]interface{}
+			assert.NoError(t, json.Unmarshal(body, &resData))
+			assert.Equal(t, expectedResult, resData["result"])
+		}
+	}
+
+	t.Run("multiply", func(t *testing.T) {
+		req := func(path, a, b string) *http.Request {
+			r := httptest.NewRequest("POST", path, nil)
+			r.Host = "localhost:8080"
+			if a != "" {
+				r.Header.Set("X-VALUE-A", a)
+			}
+			if b != "" {
+				r.Header.Set("X-VALUE-B", b)
+			}
+			return r
+		}
+		t.Run("valid case1", jsonResponse(req("/multiply", "2", "3"), 6))
+		t.Run("valid case2", jsonResponse(req("/multiply", "20", "30"), 600))
+		t.Run("with debug", jsonResponse(req("/multiply?debug=1", "20", "-30"), -600))
+		t.Run("no parameters", errorResponse(req("/multiply", "", ""), http.StatusBadRequest))
+		t.Run("without a", errorResponse(req("/multiply", "", "2"), http.StatusBadRequest))
+		t.Run("without b", errorResponse(req("/multiply", "3", ""), http.StatusBadRequest))
+		t.Run("invalid a", errorResponse(req("/multiply", "foo", "4"), http.StatusBadRequest))
+		t.Run("invalid b", errorResponse(req("/multiply", "5", "bar"), http.StatusBadRequest))
+		t.Run("GET", errorResponse(newReq("GET", "/multiply"), http.StatusMethodNotAllowed))
 	})
 }
