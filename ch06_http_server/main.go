@@ -11,9 +11,11 @@ import (
 
 func main() {
 	helloHandler := func(w http.ResponseWriter, req *http.Request) {
-		if err := echo(w, req); err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
+		if req.URL.Query().Get("debug") != "" {
+			if err := echo(w, req); err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
 		}
 	}
 
