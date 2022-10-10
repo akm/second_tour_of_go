@@ -1,25 +1,124 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 )
 
 func main() {
-	helloHandler := func(w http.ResponseWriter, req *http.Request) {
+	handler := func(w http.ResponseWriter, req *http.Request) {
 		if req.URL.Query().Get("debug") != "" {
 			if err := echo(req); err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
 		}
+		pathParts := strings.Split(req.URL.Path, "/")
+		if len(pathParts) < 2 {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+
+		switch pathParts[1] {
+		case "add":
+			if req.Method != "GET" {
+				w.WriteHeader(http.StatusMethodNotAllowed)
+				return
+			}
+			a, err := strconv.Atoi(req.URL.Query().Get("a"))
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			b, err := strconv.Atoi(req.URL.Query().Get("b"))
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			fmt.Fprintf(w, "%d\n", a+b)
+			return
+		case "subtract":
+			if req.Method != "GET" {
+				w.WriteHeader(http.StatusMethodNotAllowed)
+				return
+			}
+			if len(pathParts) < 4 {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			a, err := strconv.Atoi(pathParts[2])
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			b, err := strconv.Atoi(pathParts[3])
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			fmt.Fprintf(w, "%d\n", a-b)
+		case "multiply":
+			if req.Method != "POST" {
+				w.WriteHeader(http.StatusMethodNotAllowed)
+				return
+			}
+			a, err := strconv.Atoi(req.Header.Get("X-VALUE-A"))
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			b, err := strconv.Atoi(req.Header.Get("X-VALUE-B"))
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			result := map[string]int{"result": a * b}
+			resBody, err := json.Marshal(result)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+			w.Write(resBody)
+			fmt.Fprintln(w)
+		case "divide":
+			if req.Method != "POST" {
+				w.WriteHeader(http.StatusMethodNotAllowed)
+				return
+			}
+			body, err := ioutil.ReadAll(req.Body)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+			var params map[string]float64
+			if err := json.Unmarshal(body, &params); err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			if params["b"] == 0 {
+				w.WriteHeader(http.StatusBadRequest)
+				return
+			}
+			result := map[string]float64{"result": params["a"] / params["b"]}
+			resBody, err := json.Marshal(result)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+			w.Write(resBody)
+			fmt.Fprintln(w)
+		default:
+			w.WriteHeader(http.StatusNotFound)
+		}
 	}
 
-	http.HandleFunc("/", helloHandler)
+	http.HandleFunc("/", handler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
