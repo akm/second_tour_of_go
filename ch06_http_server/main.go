@@ -2,17 +2,17 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 )
 
 func main() {
 	helloHandler := func(w http.ResponseWriter, req *http.Request) {
 		if req.URL.Query().Get("debug") != "" {
-			if err := echo(w, req); err != nil {
+			if err := echo(req); err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
@@ -23,7 +23,8 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func echo(w io.Writer, req *http.Request) error {
+func echo(req *http.Request) error {
+	w := os.Stdout
 	b, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		return err
