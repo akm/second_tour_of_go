@@ -45,4 +45,15 @@ func TestHandler(t *testing.T) {
 		t.Run("invalid b", errorResponse("GET", "/add?a=100&bar=bar", http.StatusBadRequest))
 		t.Run("POST", errorResponse("POST", "/add?a=1&b=2", http.StatusMethodNotAllowed))
 	})
+
+	t.Run("subtract", func(t *testing.T) {
+		t.Run("valid case1", textResponse("GET", "/subtract/1/2", "-1"))
+		t.Run("valid case1", textResponse("GET", "/subtract/200/100", "100"))
+		t.Run("with debug", textResponse("GET", "/subtract/100/200?debug=1", "-100"))
+		t.Run("no parameters", errorResponse("GET", "/subtract", http.StatusBadRequest))
+		t.Run("without b", errorResponse("GET", "/subtract/100", http.StatusBadRequest))
+		t.Run("invalid a", errorResponse("GET", "/subtract/foo/200", http.StatusBadRequest))
+		t.Run("invalid b", errorResponse("GET", "/subtract/100/bar", http.StatusBadRequest))
+		t.Run("POST", errorResponse("POST", "/subtract/1/2", http.StatusMethodNotAllowed))
+	})
 }
