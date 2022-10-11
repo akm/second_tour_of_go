@@ -121,6 +121,7 @@ func TestHandler(t *testing.T) {
 		t.Run("valid case2", jsonResponse(req("/divide", "30", "20"), 1.5))
 		t.Run("with debug", jsonResponse(req("/divide?debug=1", "90", "-30"), -3))
 		t.Run("no parameters", errorResponse(req("/divide", "", ""), http.StatusBadRequest))
+		t.Run("b is zero", errorResponse(req("/divide", "3", "0"), http.StatusBadRequest))
 		t.Run("without a", errorResponse(req("/divide", "", "2"), http.StatusBadRequest))
 		t.Run("without b", errorResponse(req("/divide", "3", ""), http.StatusBadRequest))
 		t.Run("invalid a", errorResponse(req("/divide", "foo", "4"), http.StatusBadRequest))
