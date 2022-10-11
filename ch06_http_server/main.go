@@ -33,22 +33,7 @@ func handler(w http.ResponseWriter, req *http.Request) {
 
 	switch pathParts[1] {
 	case "add":
-		if req.Method != "GET" {
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			return
-		}
-		a, err := strconv.Atoi(req.URL.Query().Get("a"))
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		b, err := strconv.Atoi(req.URL.Query().Get("b"))
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		fmt.Fprintf(w, "%d\n", a+b)
-		return
+		w.WriteHeader(handleAdd(w, req))
 	case "subtract":
 		if req.Method != "GET" {
 			w.WriteHeader(http.StatusMethodNotAllowed)
@@ -132,6 +117,22 @@ func handler(w http.ResponseWriter, req *http.Request) {
 	default:
 		w.WriteHeader(http.StatusNotFound)
 	}
+}
+
+func handleAdd(w http.ResponseWriter, req *http.Request) int {
+	if req.Method != "GET" {
+		return http.StatusMethodNotAllowed
+	}
+	a, err := strconv.Atoi(req.URL.Query().Get("a"))
+	if err != nil {
+		return http.StatusBadRequest
+	}
+	b, err := strconv.Atoi(req.URL.Query().Get("b"))
+	if err != nil {
+		return http.StatusBadRequest
+	}
+	fmt.Fprintf(w, "%d\n", a+b)
+	return http.StatusOK
 }
 
 func readReqBodyFunc(req *http.Request) func() ([]byte, error) {
