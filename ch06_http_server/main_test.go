@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -97,5 +99,32 @@ func TestHandler(t *testing.T) {
 		t.Run("invalid a", errorResponse(req("/multiply", "foo", "4"), http.StatusBadRequest))
 		t.Run("invalid b", errorResponse(req("/multiply", "5", "bar"), http.StatusBadRequest))
 		t.Run("GET", errorResponse(newReq("GET", "/multiply"), http.StatusMethodNotAllowed))
+	})
+
+	t.Run("divide", func(t *testing.T) {
+		req := func(path, a, b string) *http.Request {
+			parts := []string{}
+			if a != "" {
+				parts = append(parts, fmt.Sprintf(`"a":%s`, a))
+			}
+			if b != "" {
+				parts = append(parts, fmt.Sprintf(`"b":%s`, b))
+			}
+			jsonData := fmt.Sprintf("{%s}", strings.Join(parts, ","))
+			t.Logf("jsonData: %s\n", jsonData)
+			buf := bytes.NewBufferString(jsonData)
+			r := httptest.NewRequest("POST", path, buf)
+			r.Host = "localhost:8080"
+			return r
+		}
+		t.Run("valid case1", jsonResponse(req("/divide", "6", "3"), 2))
+		t.Run("valid case2", jsonResponse(req("/divide", "30", "20"), 1.5))
+		t.Run("with debug", jsonResponse(req("/divide?debug=1", "90", "-30"), -3))
+		t.Run("no parameters", errorResponse(req("/divide", "", ""), http.StatusBadRequest))
+		t.Run("without a", errorResponse(req("/divide", "", "2"), http.StatusBadRequest))
+		t.Run("without b", errorResponse(req("/divide", "3", ""), http.StatusBadRequest))
+		t.Run("invalid a", errorResponse(req("/divide", "foo", "4"), http.StatusBadRequest))
+		t.Run("invalid b", errorResponse(req("/divide", "5", "bar"), http.StatusBadRequest))
+		t.Run("GET", errorResponse(newReq("GET", "/divide"), http.StatusMethodNotAllowed))
 	})
 }
