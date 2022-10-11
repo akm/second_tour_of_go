@@ -18,13 +18,23 @@ func main() {
 
 func handler(w http.ResponseWriter, req *http.Request) {
 	var reqBody []byte
+	readReqBody := func() ([]byte, error) {
+		if reqBody == nil {
+			var err error
+			reqBody, err = ioutil.ReadAll(req.Body)
+			if err != nil {
+				return nil, err
+			}
+		}
+		return reqBody, nil
+	}
+
 	if req.URL.Query().Get("debug") != "" {
-		var err error
-		reqBody, err = ioutil.ReadAll(req.Body)
+		body, err := readReqBody()
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
-		if err := echo(req, reqBody); err != nil {
+		if err := echo(req, body); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -101,15 +111,12 @@ func handler(w http.ResponseWriter, req *http.Request) {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
 		}
-		if reqBody == nil {
-			var err error
-			reqBody, err = ioutil.ReadAll(req.Body)
-			if err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
-			}
+		body, err := readReqBody()
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
 		}
 		var params map[string]interface{}
-		if err := json.Unmarshal(reqBody, &params); err != nil {
+		if err := json.Unmarshal(body, &params); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
