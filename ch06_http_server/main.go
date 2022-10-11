@@ -31,109 +31,119 @@ func handler(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	var writer WriterHandler
 	switch pathParts[1] {
 	case "add":
-		w.WriteHeader(handleAdd(w, req))
+		writer = handleAdd(w, req)
 	case "subtract":
-		w.WriteHeader(handleSubtract(w, req, pathParts))
+		writer = handleSubtract(w, req, pathParts)
 	case "multiply":
-		w.WriteHeader(handleMultiply(w, req))
+		writer = handleMultiply(w, req)
 	case "divide":
-		w.WriteHeader(handleDivide(w, req, readReqBody))
+		writer = handleDivide(w, req, readReqBody)
 	default:
-		w.WriteHeader(http.StatusNotFound)
+		writer = statusWriter(http.StatusNotFound)
+	}
+	writer(w)
+}
+
+type WriterHandler = func(w http.ResponseWriter)
+
+func statusWriter(status int) WriterHandler {
+	return func(w http.ResponseWriter) {
+		w.WriteHeader(status)
 	}
 }
 
-func handleAdd(w http.ResponseWriter, req *http.Request) int {
+func handleAdd(w http.ResponseWriter, req *http.Request) WriterHandler {
 	if req.Method != "GET" {
-		return http.StatusMethodNotAllowed
+		return statusWriter(http.StatusMethodNotAllowed)
 	}
 	a, err := strconv.Atoi(req.URL.Query().Get("a"))
 	if err != nil {
-		return http.StatusBadRequest
+		return statusWriter(http.StatusBadRequest)
 	}
 	b, err := strconv.Atoi(req.URL.Query().Get("b"))
 	if err != nil {
-		return http.StatusBadRequest
+		return statusWriter(http.StatusBadRequest)
 	}
 	fmt.Fprintf(w, "%d\n", a+b)
-	return http.StatusOK
+	return statusWriter(http.StatusOK)
 }
 
-func handleSubtract(w http.ResponseWriter, req *http.Request, pathParts []string) int {
+func handleSubtract(w http.ResponseWriter, req *http.Request, pathParts []string) WriterHandler {
 	if req.Method != "GET" {
-		return http.StatusMethodNotAllowed
+		return statusWriter(http.StatusMethodNotAllowed)
 	}
 	if len(pathParts) < 4 {
-		return http.StatusBadRequest
+		return statusWriter(http.StatusBadRequest)
 	}
 	a, err := strconv.Atoi(pathParts[2])
 	if err != nil {
-		return http.StatusBadRequest
+		return statusWriter(http.StatusBadRequest)
 	}
 	b, err := strconv.Atoi(pathParts[3])
 	if err != nil {
-		return http.StatusBadRequest
+		return statusWriter(http.StatusBadRequest)
 	}
 	fmt.Fprintf(w, "%d\n", a-b)
-	return http.StatusOK
+	return statusWriter(http.StatusOK)
 }
 
-func handleMultiply(w http.ResponseWriter, req *http.Request) int {
+func handleMultiply(w http.ResponseWriter, req *http.Request) WriterHandler {
 	if req.Method != "POST" {
-		return http.StatusMethodNotAllowed
+		return statusWriter(http.StatusMethodNotAllowed)
 	}
 	a, err := strconv.Atoi(req.Header.Get("X-VALUE-A"))
 	if err != nil {
-		return http.StatusBadRequest
+		return statusWriter(http.StatusBadRequest)
 	}
 	b, err := strconv.Atoi(req.Header.Get("X-VALUE-B"))
 	if err != nil {
-		return http.StatusBadRequest
+		return statusWriter(http.StatusBadRequest)
 	}
 	result := map[string]int{"result": a * b}
 	resBody, err := json.Marshal(result)
 	if err != nil {
-		return http.StatusInternalServerError
+		return statusWriter(http.StatusInternalServerError)
 	}
 	w.Write(resBody)
 	fmt.Fprintln(w)
-	return http.StatusOK
+	return statusWriter(http.StatusOK)
 }
 
-func handleDivide(w http.ResponseWriter, req *http.Request, readReqBody func() ([]byte, error)) int {
+func handleDivide(w http.ResponseWriter, req *http.Request, readReqBody func() ([]byte, error)) WriterHandler {
 	if req.Method != "POST" {
-		return http.StatusMethodNotAllowed
+		return statusWriter(http.StatusMethodNotAllowed)
 	}
 	body, err := readReqBody()
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		return statusWriter(http.StatusInternalServerError)
 	}
 	var params map[string]interface{}
 	if err := json.Unmarshal(body, &params); err != nil {
-		return http.StatusBadRequest
+		return statusWriter(http.StatusBadRequest)
 	}
 	a, ok := params["a"].(float64)
 	if !ok {
-		return http.StatusBadRequest
+		return statusWriter(http.StatusBadRequest)
 	}
 	b, ok := params["b"].(float64)
 	if !ok {
-		return http.StatusBadRequest
+		return statusWriter(http.StatusBadRequest)
 	}
 
 	if b == 0 {
-		return http.StatusBadRequest
+		return statusWriter(http.StatusBadRequest)
 	}
 	result := map[string]float64{"result": a / b}
 	resBody, err := json.Marshal(result)
 	if err != nil {
-		return http.StatusInternalServerError
+		return statusWriter(http.StatusInternalServerError)
 	}
 	w.Write(resBody)
 	fmt.Fprintln(w)
-	return http.StatusOK
+	return statusWriter(http.StatusOK)
 }
 
 func readReqBodyFunc(req *http.Request) func() ([]byte, error) {
