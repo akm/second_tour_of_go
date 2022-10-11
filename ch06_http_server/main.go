@@ -17,8 +17,14 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, req *http.Request) {
+	var reqBody []byte
 	if req.URL.Query().Get("debug") != "" {
-		if err := echo(req); err != nil {
+		var err error
+		reqBody, err = ioutil.ReadAll(req.Body)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+		if err := echo(req, reqBody); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
@@ -95,13 +101,15 @@ func handler(w http.ResponseWriter, req *http.Request) {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
 		}
-		body, err := ioutil.ReadAll(req.Body)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
+		if reqBody == nil {
+			var err error
+			reqBody, err = ioutil.ReadAll(req.Body)
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+			}
 		}
 		var params map[string]interface{}
-		if err := json.Unmarshal(body, &params); err != nil {
+		if err := json.Unmarshal(reqBody, &params); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -133,13 +141,8 @@ func handler(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func echo(req *http.Request) error {
+func echo(req *http.Request, b []byte) error {
 	w := os.Stdout
-	b, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		return err
-	}
-
 	hostParts := strings.SplitN(req.Host, ":", 2)
 
 	fmt.Fprintf(w, "--start line--\n")
