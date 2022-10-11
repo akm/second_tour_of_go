@@ -17,18 +17,7 @@ func main() {
 }
 
 func handler(w http.ResponseWriter, req *http.Request) {
-	var reqBody []byte
-	readReqBody := func() ([]byte, error) {
-		if reqBody == nil {
-			var err error
-			reqBody, err = ioutil.ReadAll(req.Body)
-			if err != nil {
-				return nil, err
-			}
-		}
-		return reqBody, nil
-	}
-
+	readReqBody := readReqBodyFunc(req)
 	if req.URL.Query().Get("debug") != "" {
 		body, err := readReqBody()
 		if err != nil {
@@ -145,6 +134,21 @@ func handler(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintln(w)
 	default:
 		w.WriteHeader(http.StatusNotFound)
+	}
+}
+
+func readReqBodyFunc(req *http.Request) func() ([]byte, error) {
+	// https://ja.wikipedia.org/wiki/メモ化 を参照
+	var memo []byte
+	return func() ([]byte, error) {
+		if memo == nil {
+			var err error
+			memo, err = ioutil.ReadAll(req.Body)
+			if err != nil {
+				return nil, err
+			}
+		}
+		return memo, nil
 	}
 }
 
