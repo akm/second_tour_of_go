@@ -44,8 +44,7 @@ func handler(w http.ResponseWriter, req *http.Request) {
 	default:
 		fn = func(req *http.Request) WriterHandler { return statusWriter(http.StatusNotFound) }
 	}
-	writer := fn(req)
-	writer(w)
+	fn(req)(w)
 }
 
 type WriterHandler = func(w http.ResponseWriter)
