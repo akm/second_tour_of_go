@@ -37,28 +37,7 @@ func handler(w http.ResponseWriter, req *http.Request) {
 	case "subtract":
 		w.WriteHeader(handleSubtract(w, req, pathParts))
 	case "multiply":
-		if req.Method != "POST" {
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			return
-		}
-		a, err := strconv.Atoi(req.Header.Get("X-VALUE-A"))
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		b, err := strconv.Atoi(req.Header.Get("X-VALUE-B"))
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		result := map[string]int{"result": a * b}
-		resBody, err := json.Marshal(result)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		w.Write(resBody)
-		fmt.Fprintln(w)
+		w.WriteHeader(handleMultiply(w, req))
 	case "divide":
 		if req.Method != "POST" {
 			w.WriteHeader(http.StatusMethodNotAllowed)
@@ -133,6 +112,28 @@ func handleSubtract(w http.ResponseWriter, req *http.Request, pathParts []string
 		return http.StatusBadRequest
 	}
 	fmt.Fprintf(w, "%d\n", a-b)
+	return http.StatusOK
+}
+
+func handleMultiply(w http.ResponseWriter, req *http.Request) int {
+	if req.Method != "POST" {
+		return http.StatusMethodNotAllowed
+	}
+	a, err := strconv.Atoi(req.Header.Get("X-VALUE-A"))
+	if err != nil {
+		return http.StatusBadRequest
+	}
+	b, err := strconv.Atoi(req.Header.Get("X-VALUE-B"))
+	if err != nil {
+		return http.StatusBadRequest
+	}
+	result := map[string]int{"result": a * b}
+	resBody, err := json.Marshal(result)
+	if err != nil {
+		return http.StatusInternalServerError
+	}
+	w.Write(resBody)
+	fmt.Fprintln(w)
 	return http.StatusOK
 }
 
