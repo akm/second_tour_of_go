@@ -23,10 +23,7 @@ func handler(w http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
-		if err := echo(req, body); err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
+		echo(req, body)
 	}
 	pathParts := strings.Split(req.URL.Path, "/")
 	if len(pathParts) < 2 {
@@ -152,7 +149,7 @@ func readReqBodyFunc(req *http.Request) func() ([]byte, error) {
 	}
 }
 
-func echo(req *http.Request, b []byte) error {
+func echo(req *http.Request, b []byte) {
 	w := os.Stdout
 	hostParts := strings.SplitN(req.Host, ":", 2)
 
@@ -176,5 +173,4 @@ func echo(req *http.Request, b []byte) error {
 	fmt.Fprintf(w, "\n--body--\n")
 	w.Write(b)
 	fmt.Fprintf(w, "\n")
-	return nil
 }
