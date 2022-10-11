@@ -35,25 +35,7 @@ func handler(w http.ResponseWriter, req *http.Request) {
 	case "add":
 		w.WriteHeader(handleAdd(w, req))
 	case "subtract":
-		if req.Method != "GET" {
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			return
-		}
-		if len(pathParts) < 4 {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		a, err := strconv.Atoi(pathParts[2])
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		b, err := strconv.Atoi(pathParts[3])
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		fmt.Fprintf(w, "%d\n", a-b)
+		w.WriteHeader(handleSubtract(w, req, pathParts))
 	case "multiply":
 		if req.Method != "POST" {
 			w.WriteHeader(http.StatusMethodNotAllowed)
@@ -132,6 +114,25 @@ func handleAdd(w http.ResponseWriter, req *http.Request) int {
 		return http.StatusBadRequest
 	}
 	fmt.Fprintf(w, "%d\n", a+b)
+	return http.StatusOK
+}
+
+func handleSubtract(w http.ResponseWriter, req *http.Request, pathParts []string) int {
+	if req.Method != "GET" {
+		return http.StatusMethodNotAllowed
+	}
+	if len(pathParts) < 4 {
+		return http.StatusBadRequest
+	}
+	a, err := strconv.Atoi(pathParts[2])
+	if err != nil {
+		return http.StatusBadRequest
+	}
+	b, err := strconv.Atoi(pathParts[3])
+	if err != nil {
+		return http.StatusBadRequest
+	}
+	fmt.Fprintf(w, "%d\n", a-b)
 	return http.StatusOK
 }
 
