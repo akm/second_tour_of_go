@@ -100,16 +100,27 @@ func handler(w http.ResponseWriter, req *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		var params map[string]float64
+		var params map[string]interface{}
 		if err := json.Unmarshal(body, &params); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		if params["b"] == 0 {
+		a, ok := params["a"].(float64)
+		if !ok {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		result := map[string]float64{"result": params["a"] / params["b"]}
+		b, ok := params["b"].(float64)
+		if !ok {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		if b == 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		result := map[string]float64{"result": a / b}
 		resBody, err := json.Marshal(result)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
