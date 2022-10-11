@@ -34,13 +34,13 @@ func handler(w http.ResponseWriter, req *http.Request) {
 	var writer WriterHandler
 	switch pathParts[1] {
 	case "add":
-		writer = handleAdd(w, req)
+		writer = handleAdd(req)
 	case "subtract":
-		writer = handleSubtract(w, req, pathParts)
+		writer = handleSubtract(req, pathParts)
 	case "multiply":
-		writer = handleMultiply(w, req)
+		writer = handleMultiply(req)
 	case "divide":
-		writer = handleDivide(w, req, readReqBody)
+		writer = handleDivide(req, readReqBody)
 	default:
 		writer = statusWriter(http.StatusNotFound)
 	}
@@ -55,7 +55,7 @@ func statusWriter(status int) WriterHandler {
 	}
 }
 
-func handleAdd(w http.ResponseWriter, req *http.Request) WriterHandler {
+func handleAdd(req *http.Request) WriterHandler {
 	if req.Method != "GET" {
 		return statusWriter(http.StatusMethodNotAllowed)
 	}
@@ -67,11 +67,13 @@ func handleAdd(w http.ResponseWriter, req *http.Request) WriterHandler {
 	if err != nil {
 		return statusWriter(http.StatusBadRequest)
 	}
-	fmt.Fprintf(w, "%d\n", a+b)
-	return statusWriter(http.StatusOK)
+	return func(w http.ResponseWriter) {
+		fmt.Fprintf(w, "%d\n", a+b)
+		w.WriteHeader(http.StatusOK)
+	}
 }
 
-func handleSubtract(w http.ResponseWriter, req *http.Request, pathParts []string) WriterHandler {
+func handleSubtract(req *http.Request, pathParts []string) WriterHandler {
 	if req.Method != "GET" {
 		return statusWriter(http.StatusMethodNotAllowed)
 	}
@@ -86,11 +88,13 @@ func handleSubtract(w http.ResponseWriter, req *http.Request, pathParts []string
 	if err != nil {
 		return statusWriter(http.StatusBadRequest)
 	}
-	fmt.Fprintf(w, "%d\n", a-b)
-	return statusWriter(http.StatusOK)
+	return func(w http.ResponseWriter) {
+		fmt.Fprintf(w, "%d\n", a-b)
+		w.WriteHeader(http.StatusOK)
+	}
 }
 
-func handleMultiply(w http.ResponseWriter, req *http.Request) WriterHandler {
+func handleMultiply(req *http.Request) WriterHandler {
 	if req.Method != "POST" {
 		return statusWriter(http.StatusMethodNotAllowed)
 	}
@@ -107,12 +111,14 @@ func handleMultiply(w http.ResponseWriter, req *http.Request) WriterHandler {
 	if err != nil {
 		return statusWriter(http.StatusInternalServerError)
 	}
-	w.Write(resBody)
-	fmt.Fprintln(w)
-	return statusWriter(http.StatusOK)
+	return func(w http.ResponseWriter) {
+		w.Write(resBody)
+		fmt.Fprintln(w)
+		w.WriteHeader(http.StatusOK)
+	}
 }
 
-func handleDivide(w http.ResponseWriter, req *http.Request, readReqBody func() ([]byte, error)) WriterHandler {
+func handleDivide(req *http.Request, readReqBody func() ([]byte, error)) WriterHandler {
 	if req.Method != "POST" {
 		return statusWriter(http.StatusMethodNotAllowed)
 	}
@@ -141,9 +147,11 @@ func handleDivide(w http.ResponseWriter, req *http.Request, readReqBody func() (
 	if err != nil {
 		return statusWriter(http.StatusInternalServerError)
 	}
-	w.Write(resBody)
-	fmt.Fprintln(w)
-	return statusWriter(http.StatusOK)
+	return func(w http.ResponseWriter) {
+		w.Write(resBody)
+		fmt.Fprintln(w)
+		w.WriteHeader(http.StatusOK)
+	}
 }
 
 func readReqBodyFunc(req *http.Request) func() ([]byte, error) {
