@@ -39,42 +39,7 @@ func handler(w http.ResponseWriter, req *http.Request) {
 	case "multiply":
 		w.WriteHeader(handleMultiply(w, req))
 	case "divide":
-		if req.Method != "POST" {
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			return
-		}
-		body, err := readReqBody()
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-		}
-		var params map[string]interface{}
-		if err := json.Unmarshal(body, &params); err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		a, ok := params["a"].(float64)
-		if !ok {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		b, ok := params["b"].(float64)
-		if !ok {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		if b == 0 {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		result := map[string]float64{"result": a / b}
-		resBody, err := json.Marshal(result)
-		if err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		w.Write(resBody)
-		fmt.Fprintln(w)
+		w.WriteHeader(handleDivide(w, req, readReqBody))
 	default:
 		w.WriteHeader(http.StatusNotFound)
 	}
@@ -128,6 +93,40 @@ func handleMultiply(w http.ResponseWriter, req *http.Request) int {
 		return http.StatusBadRequest
 	}
 	result := map[string]int{"result": a * b}
+	resBody, err := json.Marshal(result)
+	if err != nil {
+		return http.StatusInternalServerError
+	}
+	w.Write(resBody)
+	fmt.Fprintln(w)
+	return http.StatusOK
+}
+
+func handleDivide(w http.ResponseWriter, req *http.Request, readReqBody func() ([]byte, error)) int {
+	if req.Method != "POST" {
+		return http.StatusMethodNotAllowed
+	}
+	body, err := readReqBody()
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+	var params map[string]interface{}
+	if err := json.Unmarshal(body, &params); err != nil {
+		return http.StatusBadRequest
+	}
+	a, ok := params["a"].(float64)
+	if !ok {
+		return http.StatusBadRequest
+	}
+	b, ok := params["b"].(float64)
+	if !ok {
+		return http.StatusBadRequest
+	}
+
+	if b == 0 {
+		return http.StatusBadRequest
+	}
+	result := map[string]float64{"result": a / b}
 	resBody, err := json.Marshal(result)
 	if err != nil {
 		return http.StatusInternalServerError
