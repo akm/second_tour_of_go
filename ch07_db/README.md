@@ -39,3 +39,43 @@
     - `UPDATE users SET email='bar@example.com' WHERE id = 1;`
     - `DELETE FROM users WHERE id = 1;`
     - `DROP TABLE users;`
+
+## gooseでマイグレーション
+
+[goose](https://github.com/pressly/goose) はデータベースのマイグレーションを行うためのCLIアプリ/Goライブラリです。
+
+### テーブルを作成する
+
+1. `go install github.com/pressly/goose/v3/cmd/goose@latest`
+    - 必要ならば `asdf reshim` などを行う 
+2. `mkdir ./dbmigrations`
+3. `goose --dir ./dbmigrations create create_table_users sql`
+4. `./dbmigrations` に作られたファイルの中身を以下のように変更
+    ```
+    -- +goose Up
+    CREATE TABLE users (
+        id serial PRIMARY KEY,
+        email VARCHAR(255) NOT NULL,
+        created_at datetime  default current_timestamp,
+        updated_at timestamp default current_timestamp on update current_timestamp,
+        UNIQUE INDEX unq_users_email (email)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE utf8mb4_bin;
+
+    -- +goose Down
+    DROP TABLE users;
+    ```
+5. `goose --dir ./dbmigrations mysql 'root:@tcp(127.0.0.1:3306)/testdb1?charset=utf8mb4&parseTime=True&loc=Asia%2FTokyo' up`
+6. mysqlにアクセスして`SHOW TABLES` `DESC users` あるいは `SHOW CREATE TABLE users` `SELECT * FROM goose_db_version` などでテーブルが作られていることを確認
+7. `goose --dir ./dbmigrations mysql 'root:@tcp(127.0.0.1:3306)/testdb1?charset=utf8mb4&parseTime=True&loc=Asia%2FTokyo' down`
+8. mysqlにアクセスして`SHOW TABLES` で、テーブルが削除されていることを確認
+
+### :question: カラムを追加してください
+
+1. `users` テーブルに `VARCHAR(255) NOT NULL` の `name` カラムを追加するマイグレーションを追加してください
+2. マイグレーションを実行 (`up`) してカラムを追加してください
+3. マイグレーションを１つだけ `down` してください
+4. `down` した状態（ `name` カラムが存在しない状態 ) で以下を実行してください
+    `INSERT INTO users (email) VALUES ('foo@example.com');`
+5. 再度マイグレーションを実行 (`up`) するとどうなるでしょうか？以下のポイントを挙げてください
+    - 問題となりうる点
+    - 問題に対する解決策
