@@ -1,0 +1,17 @@
+{
+  "client_name": "John Doe",
+  "items": [
+    {
+      "product_name": "Apple",
+      "quantity": 3
+    },
+    {
+      "product_name": "Orange",
+      "quantity": 4
+    },
+    {
+      "product_name": "Banana",
+      "quantity": 2
+    }
+  ]
+}
